@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#12324A">
+<meta name="description" content="ProHub360 Ebeltoft – Golf, træning, oplevelser og fællesskab ved Ebeltoft Vig">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ProHub360 Ebeltoft">
+<title>ProHub360 Ebeltoft</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#12324A;--navy2:#1a4060;--green:#3F6B43;--green2:#2d4f31;
+  --sand:#DCC7A1;--sand2:#c9af87;--white:#FFFFFF;--bg:#F7F5F2;
+  --text:#1C1C1E;--muted:#6B7280;--border:#E5E0D8;
+  --radius:12px;--radius2:20px;
+  --shadow:0 4px 24px rgba(18,50,74,.10);--shadow2:0 8px 40px rgba(18,50,74,.18);
+  --fd:'Playfair Display',Georgia,serif;--fb:'Inter',-apple-system,sans-serif;
+  --nav:64px;--tab:68px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--white);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+input,textarea,select{font-family:inherit}
+
+.page{display:none;min-height:100vh;padding-bottom:calc(var(--tab) + 16px)}
+.page.active{display:block}
+
+#topnav{position:fixed;top:0;left:0;right:0;height:var(--nav);background:var(--navy);z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;padding:0 16px;
+  box-shadow:0 2px 16px rgba(0,0,0,.3)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:36px;height:36px;background:var(--green);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.nav-title{font-family:var(--fd);font-size:1.05rem;font-weight:700;color:#fff;line-height:1.1}
+.nav-title span{display:block;font-size:.58rem;font-family:var(--fb);font-weight:400;
+  color:var(--sand);letter-spacing:.08em;text-transform:uppercase}
+.nav-menu-btn{width:36px;height:36px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:5px;background:rgba(255,255,255,.1);border-radius:8px}
+.nav-menu-btn span{display:block;width:20px;height:2px;background:#fff;border-radius:2px}
+
+#drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1100;
+  opacity:0;pointer-events:none;transition:opacity .3s}
+#drawer-overlay.open{opacity:1;pointer-events:all}
+#drawer{position:fixed;top:0;right:-300px;width:280px;height:100%;background:var(--navy);
+  z-index:1200;transition:right .3s cubic-bezier(.4,0,.2,1);display:flex;
+  flex-direction:column;padding-top:60px;overflow-y:auto}
+#drawer.open{right:0}
+#dcls{position:absolute;top:16px;right:16px;width:32px;height:32px;
+  background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;
+  justify-content:center;color:#fff;font-size:1.1rem;cursor:pointer}
+.ds{padding:8px 20px 4px;font-size:.62rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--sand);opacity:.7}
+.di{display:flex;align-items:center;gap:12px;padding:11px 20px;color:#fff;
+  font-size:.9rem;font-weight:500;cursor:pointer;transition:background .2s;
+  border-left:3px solid transparent}
+.di:hover,.di.active{background:rgba(255,255,255,.08);border-left-color:var(--sand)}
+.di .ic{font-size:1rem;width:20px;text-align:center}
+
+#tabbar{position:fixed;bottom:0;left:0;right:0;height:var(--tab);background:var(--navy);
+  display:flex;z-index:1000;border-top:1px solid rgba(255,255,255,.1);
+  padding-bottom:env(safe-area-inset-bottom)}
+.ti{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;color:rgba(255,255,255,.45);font-size:.58rem;font-weight:600;
+  letter-spacing:.03em;cursor:pointer;transition:color .2s;padding-top:6px}
+.ti .ticon{font-size:1.25rem;line-height:1}
+.ti.active{color:var(--sand)}
+
+.content{padding-top:var(--nav)}
+
+.hero{background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 55%,var(--green2) 100%);
+  padding:40px 20px 36px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;right:-20%;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(63,107,67,.22) 0%,transparent 70%);pointer-events:none}
+.h-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(220,199,161,.13);
+  border:1px solid rgba(220,199,161,.28);border-radius:100px;padding:4px 12px;
+  font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--sand);margin-bottom:14px}
+.hero h1{font-family:var(--fd);font-size:clamp(1.8rem,6vw,2.6rem);font-weight:900;
+  color:#fff;line-height:1.15;margin-bottom:10px}
+.hero h1 em{font-style:normal;color:var(--sand)}
+.hero p{font-size:.95rem;color:rgba(255,255,255,.72);line-height:1.6;margin-bottom:24px;max-width:320px}
+.hero-ctas{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+.cb{display:flex;align-items:center;justify-content:center;gap:7px;padding:12px 14px;
+  border-radius:var(--radius);font-size:.82rem;font-weight:600;transition:all .2s;cursor:pointer}
+.cb:active{transform:scale(.97)}
+.cb-primary{background:var(--green);color:#fff;grid-column:1/-1;font-size:.95rem;padding:15px}
+.cb-primary:hover{background:var(--green2)}
+.cb-secondary{background:rgba(255,255,255,.11);color:#fff;border:1px solid rgba(255,255,255,.18)}
+.cb-secondary:hover{background:rgba(255,255,255,.18)}
+.cb-sand{background:var(--sand);color:var(--navy)}
+.cb-sand:hover{background:var(--sand2)}
+.cafe-hero-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  padding:12px;background:rgba(220,199,161,.1);border:1px solid rgba(220,199,161,.22);
+  border-radius:var(--radius);color:var(--sand);font-size:.88rem;font-weight:600;cursor:pointer}
+
+.kennett-card{background:var(--navy);border-radius:var(--radius2);padding:20px;
+  display:flex;flex-direction:column;gap:16px}
+.kc-top{display:flex;align-items:center;gap:14px}
+.kc-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--navy2));
+  display:flex;align-items:center;justify-content:center;font-size:1.8rem;
+  border:3px solid var(--sand);flex-shrink:0}
+.kc-name{font-family:var(--fd);font-size:1.15rem;font-weight:700;color:#fff}
+.kc-role{font-size:.72rem;color:var(--sand);margin-top:2px;font-weight:500}
+.kc-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kc-btn{display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:11px 8px;border-radius:var(--radius);font-size:.8rem;font-weight:600;
+  transition:all .2s;cursor:pointer}
+.kc-btn-green{background:var(--green);color:#fff}
+.kc-btn-outline{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.kc-btn-sand{background:var(--sand);color:var(--navy)}
+
+.today-strip{background:var(--navy);padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.tc{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--radius);padding:13px}
+.tc.full{grid-column:1/-1}
+.tc-label{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--sand);margin-bottom:5px}
+.tc-val{font-family:var(--fd);font-size:.9rem;color:#fff;line-height:1.3;font-weight:600}
+.tc-sub{font-size:.68rem;color:rgba(255,255,255,.45);margin-top:3px}
+
+.sec{padding:28px 20px}
+.sec-alt{background:var(--bg)}
+.sec-navy{background:var(--navy);color:#fff}
+.sec-green{background:var(--green);color:#fff}
+.sec-coffee{background:#1C1008;color:#fff}
+
+.ey{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--green);margin-bottom:5px}
+.sec-navy .ey,.sec-green .ey,.sec-coffee .ey{color:var(--sand)}
+.st{font-family:var(--fd);font-size:clamp(1.35rem,4vw,1.75rem);font-weight:700;
+  line-height:1.2;color:var(--navy)}
+.sec-navy .st,.sec-green .st,.sec-coffee .st{color:#fff}
+.sd{font-size:.87rem;color:var(--muted);margin-top:7px;line-height:1.6}
+.sec-navy .sd,.sec-green .sd,.sec-coffee .sd{color:rgba(255,255,255,.65)}
+.sh{margin-bottom:16px}
+
+.card{background:#fff;border-radius:var(--radius2);box-shadow:var(--shadow);overflow:hidden;transition:transform .2s}
+.card:active{transform:scale(.99)}
+.cb2{padding:16px}
+.ct{font-family:var(--fd);font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:5px}
+.cx{font-size:.82rem;color:var(--muted);line-height:1.5}
+.cg{display:grid;grid-template-columns:1fr;gap:12px}
+.cg2{grid-template-columns:1fr 1fr}
+
+.iph{width:100%;background:linear-gradient(135deg,var(--navy) 0%,var(--green) 100%);
+  display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.iph span{font-size:2rem;z-index:1}
+
+.ab{display:inline-flex;align-items:center;gap:7px;padding:11px 16px;
+  border-radius:var(--radius);font-size:.83rem;font-weight:600;transition:all .2s;cursor:pointer}
+.ab:active{transform:scale(.97)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-green{background:var(--green);color:#fff}
+.btn-sand{background:var(--sand);color:var(--navy)}
+.btn-ow{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.38)}
+.btn-ow:hover{background:rgba(255,255,255,.1)}
+.btn-outline{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}
+.btn-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+
+.live-badge{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-weight:600;color:#4ade80}
+.ldot{width:7px;height:7px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+
+.ph{background:linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%);padding:26px 20px 22px}
+.ph-ey{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sand);margin-bottom:5px}
+.ph-t{font-family:var(--fd);font-size:1.65rem;font-weight:800;color:#fff;line-height:1.2}
+.ph-d{font-size:.83rem;color:rgba(255,255,255,.62);margin-top:5px;line-height:1.5}
+
+.bk-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:15px;margin-bottom:11px;display:flex;align-items:center;gap:13px;cursor:pointer;transition:all .2s}
+.bk-card:active{transform:scale(.99)}
+.bk-icon{width:50px;height:50px;border-radius:11px;background:linear-gradient(135deg,var(--navy) 0%,var(--green) 100%);
+  display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0}
+.bk-title{font-weight:700;font-size:.92rem;color:var(--navy);margin-bottom:2px}
+.bk-desc{font-size:.75rem;color:var(--muted);line-height:1.4}
+.bk-price{font-family:var(--fd);font-weight:700;font-size:.85rem;color:var(--green);margin-top:3px}
+.bk-arrow{margin-left:auto;color:var(--green);font-size:1rem;flex-shrink:0}
+
+.nc{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:13px;cursor:pointer;transition:all .2s}
+.nc:active{transform:scale(.99)}
+.nc-img{height:150px}
+.nc-body{padding:14px}
+.nc-meta{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.nc-tag{background:var(--green);color:#fff;border-radius:100px;padding:2px 9px;
+  font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.nc-date{font-size:.72rem;color:var(--muted)}
+.nc-title{font-family:var(--fd);font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.3}
+.nc-exc{font-size:.82rem;color:var(--muted);line-height:1.5}
+
+.ev-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);
+  overflow:hidden;margin-bottom:11px;display:flex;transition:.2s}
+.ev-date{width:66px;background:var(--green);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;flex-shrink:0;padding:10px 0}
+.ev-day{font-family:var(--fd);font-size:1.7rem;font-weight:900;color:#fff;line-height:1}
+.ev-month{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.8);font-weight:700}
+.ev-body{padding:13px;flex:1}
+.ev-title{font-weight:700;font-size:.9rem;color:var(--navy);margin-bottom:3px}
+.ev-info{font-size:.75rem;color:var(--muted);line-height:1.5}
+.ev-badge{display:inline-block;margin-top:5px;background:rgba(63,107,67,.1);color:var(--green);
+  border-radius:100px;padding:2px 9px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+
+.chip-row{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none}
+.chip-row::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:6px 14px;border-radius:100px;font-size:.75rem;
+  font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;transition:all .2s}
+.chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+.tip-card{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+  border-radius:var(--radius2);padding:22px;position:relative;overflow:hidden}
+.tip-card::before{content:'"';position:absolute;top:-10px;left:14px;font-family:var(--fd);
+  font-size:7rem;color:rgba(220,199,161,.07);line-height:1;pointer-events:none}
+.tip-ey{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--sand);margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.tip-text{font-family:var(--fd);font-size:1.15rem;color:#fff;line-height:1.5;margin-bottom:12px;font-weight:600}
+.tip-by{font-size:.75rem;color:rgba(255,255,255,.45)}
+.tip-by strong{color:var(--sand)}
+
+.ac-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.ac-mod{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:transform .2s}
+.ac-mod:active{transform:scale(.97)}
+.ac-img{height:82px;background:linear-gradient(135deg,var(--navy) 0%,var(--green) 100%);
+  display:flex;align-items:center;justify-content:center;font-size:1.9rem}
+.ac-body{padding:11px}
+.ac-title{font-weight:700;font-size:.88rem;color:var(--navy);margin-bottom:2px}
+.ac-desc{font-size:.7rem;color:var(--muted);line-height:1.4}
+
+.vph{width:100%;background:#000;border-radius:var(--radius);display:flex;align-items:center;
+  justify-content:center;flex-direction:column;gap:7px;cursor:pointer;position:relative;overflow:hidden}
+.vbg{position:absolute;inset:0;background:linear-gradient(135deg,var(--navy2) 0%,var(--green2) 100%);opacity:.92}
+.play-btn{width:52px;height:52px;background:rgba(255,255,255,.9);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;z-index:1;padding-left:4px;
+  box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.vlabel{font-size:.8rem;font-weight:600;color:#fff;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.vdur{font-size:.68rem;color:rgba(255,255,255,.55);z-index:1}
+
+.bl{display:flex;align-items:center;gap:13px;padding:13px;background:#fff;
+  border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:9px;cursor:pointer;transition:all .2s}
+.bl:active{transform:scale(.99)}
+.bl-icon{width:42px;height:42px;background:var(--bg);border-radius:9px;
+  display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.bl-title{font-weight:700;font-size:.88rem;color:var(--navy)}
+.bl-sub{font-size:.72rem;color:var(--muted);margin-top:2px}
+.bl-arr{margin-left:auto;color:var(--muted)}
+
+.hole-acc{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:9px;overflow:hidden}
+.hole-hdr{display:flex;align-items:center;cursor:pointer;user-select:none}
+.hole-num{width:62px;padding:14px 0;background:var(--navy);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;flex-shrink:0}
+.hn{font-family:var(--fd);font-size:1.5rem;font-weight:900;color:var(--sand);line-height:1}
+.hl{font-size:.52rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5)}
+.hole-meta-row{padding:0 14px;display:flex;gap:14px;flex:1}
+.hm-item{display:flex;flex-direction:column}
+.hm-lab{font-size:.52rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.hm-val{font-size:.9rem;font-weight:700;color:var(--navy)}
+.hole-arr{margin-left:auto;padding-right:14px;color:var(--muted);font-size:.9rem;transition:transform .3s}
+.hole-acc.open .hole-arr{transform:rotate(180deg)}
+.hole-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.hole-acc.open .hole-body{max-height:500px}
+.hole-inner{padding:0 14px 16px}
+.hole-img{height:100px;background:linear-gradient(135deg,var(--green2) 0%,var(--navy) 100%);
+  border-radius:var(--radius);margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:2rem}
+.hole-sec{margin-bottom:9px}
+.hole-sec-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--green);margin-bottom:3px}
+.hole-sec-text{font-size:.8rem;color:var(--text);line-height:1.5}
+.par-badge{display:inline-block;background:var(--green);color:#fff;border-radius:100px;
+  padding:2px 10px;font-size:.65rem;font-weight:700;margin-top:4px}
+.par-badge.par3{background:#8B5CF6}
+.par-badge.par5{background:var(--sand2);color:var(--navy)}
+
+.cafe-hdr{background:linear-gradient(160deg,#1C1008 0%,#3D2B1A 100%);padding:32px 20px;text-align:center}
+.cafe-logo-big{font-size:2.8rem;margin-bottom:10px}
+.cafe-name-big{font-family:var(--fd);font-size:1.9rem;font-weight:900;color:var(--sand);margin-bottom:3px}
+.cafe-tag{font-size:.87rem;color:rgba(255,255,255,.6)}
+.menu-item{display:flex;align-items:center;justify-content:space-between;
+  padding:13px 0;border-bottom:1px solid var(--border)}
+.menu-item:last-child{border-bottom:none}
+.min-name{font-weight:600;font-size:.88rem;color:var(--navy)}
+.min-desc{font-size:.72rem;color:var(--muted);margin-top:2px}
+.min-price{font-family:var(--fd);font-weight:700;font-size:.95rem;color:var(--green);white-space:nowrap;margin-left:10px}
+.hours-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}
+.hours-day{font-weight:600;font-size:.87rem}
+.hours-open{color:var(--green);font-weight:600;font-size:.83rem}
+
+.att-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:11px}
+.att-img{height:130px}
+.att-body{padding:13px}
+.att-cat{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:3px}
+.att-title{font-family:var(--fd);font-weight:700;font-size:.98rem;color:var(--navy);margin-bottom:4px}
+.att-desc{font-size:.79rem;color:var(--muted);line-height:1.5}
+
+.co-feat{display:flex;align-items:flex-start;gap:13px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.co-feat:last-child{border-bottom:none}
+.co-icon{width:42px;height:42px;background:rgba(255,255,255,.1);border-radius:9px;
+  display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.co-title{font-weight:700;font-size:.92rem;color:#fff;margin-bottom:3px}
+.co-desc{font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.45}
+
+.tr-hero{background:linear-gradient(160deg,var(--navy) 0%,var(--green2) 100%);padding:32px 20px;text-align:center}
+.tr-av{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--navy2));
+  margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:2.4rem;
+  border:4px solid var(--sand);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.tr-name{font-family:var(--fd);font-size:1.65rem;font-weight:700;color:#fff;margin-bottom:3px}
+.tr-role{font-size:.82rem;color:var(--sand);font-weight:500;letter-spacing:.05em;margin-bottom:14px}
+.badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-bottom:18px}
+.badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  border-radius:100px;padding:4px 11px;font-size:.68rem;font-weight:600;color:#fff}
+.badge-sand{background:rgba(220,199,161,.18);border-color:rgba(220,199,161,.3);color:var(--sand)}
+
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:20px}
+.kpi-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:15px;border-left:4px solid var(--green)}
+.kpi-card.kn{border-left-color:var(--navy)}
+.kpi-card.ks{border-left-color:var(--sand2)}
+.kpi-card.kr{border-left-color:#e05a5a}
+.kpi-val{font-family:var(--fd);font-size:1.85rem;font-weight:900;color:var(--navy);line-height:1}
+.kpi-lab{font-size:.7rem;color:var(--muted);margin-top:3px;font-weight:500}
+.kpi-delta{font-size:.7rem;font-weight:700;margin-top:5px}
+.ku{color:#22c55e}.kd{color:#ef4444}
+
+.chart-area{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:13px}
+.chart-title{font-weight:700;font-size:.87rem;color:var(--navy);margin-bottom:14px}
+.bar-chart{display:flex;align-items:flex-end;gap:5px;height:90px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar{width:100%;border-radius:4px 4px 0 0;background:var(--green);transition:height .5s}
+.bar-lbl{font-size:.58rem;color:var(--muted);font-weight:600}
+.bar-vl{font-size:.62rem;font-weight:700;color:var(--navy)}
+
+.fg{margin-bottom:13px}
+.flbl{display:block;font-size:.75rem;font-weight:600;color:var(--navy);margin-bottom:5px}
+.finp,.ftxa,.fsel{width:100%;padding:11px 13px;border:1.5px solid var(--border);
+  border-radius:var(--radius);font-size:.88rem;color:var(--text);background:#fff;outline:none;transition:border-color .2s}
+.finp:focus,.ftxa:focus,.fsel:focus{border-color:var(--green)}
+.ftxa{min-height:95px;resize:vertical}
+
+.map-ph{width:100%;height:220px;background:linear-gradient(135deg,#e8f4e8 0%,#c8e0c8 100%);
+  border-radius:var(--radius);display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:7px;border:2px dashed var(--green);cursor:pointer}
+.map-ph:hover{background:linear-gradient(135deg,#d8eed8 0%,#b8d8b8 100%)}
+
+#modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;
+  display:none;align-items:flex-end;justify-content:center}
+#modal-overlay.open{display:flex}
+#modal-box{background:#fff;border-radius:var(--radius2) var(--radius2) 0 0;
+  width:100%;max-width:480px;padding:28px 24px 40px;position:relative;
+  animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+#modal-cls{position:absolute;top:14px;right:16px;width:30px;height:30px;
+  background:var(--bg);border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:1rem;cursor:pointer;color:var(--muted)}
+.modal-icon{font-size:2.5rem;margin-bottom:10px}
+.modal-title{font-family:var(--fd);font-size:1.3rem;font-weight:700;color:var(--navy);margin-bottom:6px}
+.modal-desc{font-size:.85rem;color:var(--muted);line-height:1.6;margin-bottom:16px}
+
+#article-overlay{position:fixed;inset:0;background:#fff;z-index:1500;
+  display:none;overflow-y:auto;padding-top:var(--nav)}
+#article-overlay.open{display:block}
+#art-close{position:fixed;top:72px;left:16px;background:var(--bg);border:none;
+  border-radius:var(--radius);padding:8px 14px;font-size:.8rem;font-weight:600;
+  color:var(--navy);cursor:pointer;z-index:1600;box-shadow:var(--shadow)}
+.art-img{height:220px}
+.art-body{padding:20px}
+.art-cat{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.art-title{font-family:var(--fd);font-size:1.5rem;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.3}
+.art-meta{font-size:.72rem;color:var(--muted);margin-bottom:16px}
+.art-text{font-size:.9rem;color:var(--text);line-height:1.75}
+.art-text p{margin-bottom:12px}
+
+#dash-login{padding:60px 24px 32px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.dl-icon{font-size:3rem;margin-bottom:16px}
+.dl-title{font-family:var(--fd);font-size:1.5rem;font-weight:700;color:var(--navy);margin-bottom:6px}
+.dl-sub{font-size:.87rem;color:var(--muted);margin-bottom:28px}
+.dl-code-wrap{display:flex;gap:10px;justify-content:center;margin-bottom:16px}
+.dl-digit{width:52px;height:64px;border:2px solid var(--border);border-radius:var(--radius);
+  font-family:var(--fd);font-size:1.8rem;font-weight:700;text-align:center;color:var(--navy);outline:none}
+.dl-digit:focus{border-color:var(--green)}
+.dl-err{color:#ef4444;font-size:.8rem;font-weight:600;min-height:20px;margin-bottom:12px}
+.dl-btn{background:var(--green);color:#fff;border:none;border-radius:var(--radius);
+  padding:13px 40px;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .2s}
+.dl-btn:hover{background:var(--green2)}
+#dash-content{display:none}
+
+#install-banner{position:fixed;bottom:calc(var(--tab) + 10px);left:12px;right:12px;
+  background:var(--navy);border-radius:var(--radius);padding:13px 14px;
+  display:flex;align-items:center;gap:11px;box-shadow:var(--shadow2);z-index:900;
+  border:1px solid rgba(220,199,161,.28);animation:slideUp .4s ease}
+#install-banner.hidden{display:none}
+.ib-icon{font-size:1.4rem}
+.ib-text{flex:1}
+.ib-title{font-weight:700;font-size:.83rem;color:#fff}
+.ib-sub{font-size:.7rem;color:rgba(255,255,255,.45)}
+#ib-btn{background:var(--sand);color:var(--navy);border:none;border-radius:8px;
+  padding:7px 13px;font-weight:700;font-size:.76rem;cursor:pointer}
+#ib-cls{background:none;border:none;color:rgba(255,255,255,.35);font-size:1.1rem;cursor:pointer;padding:4px}
+
+.faq-item{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:7px;overflow:hidden}
+.faq-q{padding:13px 15px;font-weight:600;font-size:.88rem;color:var(--navy);cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center}
+.faq-q::after{content:'＋';font-size:1.05rem;color:var(--green);transition:transform .3s;flex-shrink:0}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-item.open .faq-a{max-height:200px}
+.faq-ai{padding:0 15px 13px;font-size:.83rem;color:var(--muted);line-height:1.6}
+
+#main-footer{background:var(--navy);padding:28px 20px 32px;text-align:center}
+.ft-logo{font-family:var(--fd);font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:3px}
+.ft-sub{font-size:.72rem;color:rgba(255,255,255,.35);margin-bottom:18px}
+.ft-links{display:flex;justify-content:center;gap:18px;margin-bottom:13px;flex-wrap:wrap}
+.ft-links a{font-size:.75rem;color:rgba(255,255,255,.45)}
+.ft-links a:hover{color:var(--sand)}
+.ft-dev{font-size:.68rem;color:rgba(255,255,255,.22)}
+.ft-dev a{color:var(--sand);opacity:.65}
+
+.testi{background:var(--bg);border-radius:var(--radius);padding:15px;margin-bottom:9px;border-left:4px solid var(--green)}
+.testi-text{font-size:.86rem;color:var(--text);line-height:1.6;font-style:italic;margin-bottom:7px}
+.testi-by{font-size:.7rem;color:var(--muted);font-weight:600}
+
+.ugenstilbud{background:linear-gradient(135deg,#8B4513 0%,#6B3410 100%);border-radius:var(--radius2);
+  padding:20px;position:relative;overflow:hidden;margin-bottom:14px}
+.ugenstilbud::before{content:'%';position:absolute;right:-10px;top:-20px;font-family:var(--fd);
+  font-size:8rem;color:rgba(255,255,255,.06);font-weight:900;pointer-events:none}
+.ut-ey{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sand);margin-bottom:7px}
+.ut-title{font-family:var(--fd);font-size:1.2rem;color:#fff;font-weight:700;margin-bottom:5px}
+.ut-desc{font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.5;margin-bottom:12px}
+.ut-price{display:flex;align-items:center;gap:10px}
+.ut-orig{font-size:.85rem;color:rgba(255,255,255,.4);text-decoration:line-through}
+.ut-new{font-family:var(--fd);font-size:1.4rem;font-weight:900;color:var(--sand)}
+
+.act-row{display:flex;align-items:center;gap:11px;padding:11px 15px;border-bottom:1px solid var(--border)}
+.act-row:last-child{border-bottom:none}
+.act-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.act-txt{font-size:.8rem;font-weight:600;color:var(--navy)}
+.act-time{font-size:.68rem;color:var(--muted)}
+
+@media(min-width:480px){
+  .hero-ctas{grid-template-columns:1fr 1fr 1fr}
+  .cb-primary{grid-column:1/-1}
+  .ac-grid{grid-template-columns:repeat(3,1fr)}
+  .kpi-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:640px){
+  .sec{padding:36px 28px}
+  .hero{padding:48px 28px 40px}
+}
+</style>
+</head>
+<body>
+
+<nav id="topnav">
+  <div class="nav-brand">
+    <div class="nav-logo">⛳</div>
+    <div class="nav-title">ProHub360 Ebeltoft<span>Ebeltoft Golf Club</span></div>
+  </div>
+  <button class="nav-menu-btn" onclick="openDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div id="drawer-overlay" onclick="closeDrawer()"></div>
+<div id="drawer">
+  <div id="dcls" onclick="closeDrawer()">✕</div>
+  <div class="ds">Oversigt</div>
+  <div class="di" onclick="gotoPage('home')"><span class="ic">🏠</span>Hjem</div>
+  <div class="di" onclick="gotoPage('news')"><span class="ic">📰</span>Nyheder</div>
+  <div class="di" onclick="gotoPage('tip')"><span class="ic">💡</span>Tip of the Week</div>
+  <div class="di" onclick="gotoPage('events')"><span class="ic">📅</span>Events</div>
+  <div class="ds">Golf & Træning</div>
+  <div class="di" onclick="gotoPage('booking')"><span class="ic">📲</span>Book Træning</div>
+  <div class="di" onclick="gotoPage('academy')"><span class="ic">🎯</span>Academy</div>
+  <div class="di" onclick="gotoPage('beginner')"><span class="ic">🌱</span>Begynderunivers</div>
+  <div class="di" onclick="gotoPage('course')"><span class="ic">⛳</span>Baneguide</div>
+  <div class="ds">Oplevelser</div>
+  <div class="di" onclick="gotoPage('cafe')"><span class="ic">☕</span>Café To</div>
+  <div class="di" onclick="gotoPage('tourist')"><span class="ic">🗺️</span>Turist & Oplevelser</div>
+  <div class="di" onclick="gotoPage('company')"><span class="ic">💼</span>Company Days</div>
+  <div class="ds">Platform</div>
+  <div class="di" onclick="gotoPage('trainer')"><span class="ic">👤</span>Kennett Sørensen</div>
+  <div class="di" onclick="gotoPage('dashboard')"><span class="ic">📊</span>Dashboard</div>
+</div>
+
+<div id="modal-overlay" onclick="closeModal()">
+  <div id="modal-box" onclick="event.stopPropagation()">
+    <div id="modal-cls" onclick="closeModal()">✕</div>
+    <div id="modal-icon" class="modal-icon"></div>
+    <div id="modal-title" class="modal-title"></div>
+    <div id="modal-desc" class="modal-desc"></div>
+    <div id="modal-btns" class="btn-row"></div>
+  </div>
+</div>
+
+<div id="article-overlay">
+  <button id="art-close" onclick="closeArticle()">← Tilbage</button>
+  <div id="art-content"></div>
+</div>
+
+<div id="install-banner" class="hidden">
+  <div class="ib-icon">⛳</div>
+  <div class="ib-text"><div class="ib-title">Installer ProHub360</div><div class="ib-sub">Tilføj til hjemmeskærm</div></div>
+  <button id="ib-btn" onclick="installApp()">Installer</button>
+  <button id="ib-cls" onclick="document.getElementById('install-banner').classList.add('hidden')">✕</button>
+</div>
+
+<div class="content">
+
+<!-- ===== HOME ===== -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="h-badge">⛳ Ebeltoft Vig · Mols Bjerge</div>
+    <h1>Velkommen til<br><em>ProHub360</em><br>Ebeltoft</h1>
+    <p>Golf, træning, oplevelser og fællesskab – samlet på ét sted.</p>
+    <div class="hero-ctas">
+      <button class="cb cb-primary" onclick="gotoPage('booking')">📲 Book Træning</button>
+      <a class="cb cb-secondary" href="tel:+4500000000">📞 Ring til Kennett</a>
+      <a class="cb cb-secondary" href="sms:+4500000000">💬 Send SMS</a>
+      <a class="cb cb-secondary" href="mailto:Indsæt@mailadresse.dk">✉️ Send Mail</a>
+    </div>
+    <button class="cafe-hero-btn" onclick="gotoPage('cafe')">☕ Café To – Dagens ret &amp; åbningstider →</button>
+  </div>
+
+  <div class="today-strip">
+    <div class="tc"><div class="tc-label">💡 Dagens tip</div><div class="tc-val">Tjek puttens kant inden du slår</div><div class="tc-sub">Kennett Sørensen · PGA Pro</div></div>
+    <div class="tc"><div class="tc-label">📅 Næste event</div><div class="tc-val">EGC Membersmatch</div><div class="tc-sub">28. juni · kl. 09:00</div></div>
+    <div class="tc full"><div class="tc-label">📰 Seneste nyhed</div><div class="tc-val">Ny begyndersæson åbner 1. august</div><div class="tc-sub">Tilmeld dig nu – begrænset antal pladser</div></div>
+  </div>
+
+  <div class="sec sec-alt">
+    <div class="sh"><div class="ey">Din træner</div><div class="st">Kennett Sørensen</div></div>
+    <div class="kennett-card">
+      <div class="kc-top">
+        <div class="kc-avatar">🏌️</div>
+        <div>
+          <div class="kc-name">Kennett Sørensen</div>
+          <div class="kc-role">PGA Teaching Professional · Ebeltoft Golf Club</div>
+          <div style="margin-top:6px;font-size:.72rem;color:rgba(255,255,255,.5)">📞 Indsæt mobilnummer &nbsp;|&nbsp; ✉️ Indsæt mailadresse</div>
+        </div>
+      </div>
+      <div class="kc-btns">
+        <a class="kc-btn kc-btn-sand" href="tel:+4500000000">📞 Ring</a>
+        <a class="kc-btn kc-btn-outline" href="sms:+4500000000">💬 SMS</a>
+        <a class="kc-btn kc-btn-outline" href="mailto:Indsæt@mailadresse.dk">✉️ Mail</a>
+        <button class="kc-btn kc-btn-green" onclick="gotoPage('booking')">📲 Book Træning</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="ey">Genveje</div><div class="st">Hvad leder du efter?</div></div>
+    <div class="cg cg2">
+      <div class="card" onclick="gotoPage('beginner')" style="cursor:pointer"><div class="iph" style="height:78px"><span>🌱</span></div><div class="cb2"><div class="ct">Begynder</div><div class="cx">Kom godt i gang med golf</div></div></div>
+      <div class="card" onclick="gotoPage('academy')" style="cursor:pointer"><div class="iph" style="height:78px"><span>🎯</span></div><div class="cb2"><div class="ct">Academy</div><div class="cx">Videolektioner & teknik</div></div></div>
+      <div class="card" onclick="gotoPage('tourist')" style="cursor:pointer"><div class="iph" style="height:78px;background:linear-gradient(135deg,#1a4060,#2a7090)"><span>🌊</span></div><div class="cb2"><div class="ct">Greenfee</div><div class="cx">Gæster & pay&amp;play</div></div></div>
+      <div class="card" onclick="gotoPage('company')" style="cursor:pointer"><div class="iph" style="height:78px;background:linear-gradient(135deg,#1C1008,#3D2B1A)"><span>💼</span></div><div class="cb2"><div class="ct">Firmaevent</div><div class="cx">Teambuilding på banen</div></div></div>
+    </div>
+  </div>
+
+  <div id="main-footer">
+    <div class="ft-logo">ProHub360 Ebeltoft</div>
+    <div class="ft-sub">Ebeltoft Golf Club · Mols Bjerge</div>
+    <div class="ft-links">
+      <a href="#" onclick="alert('Privatlivspolitik: ProHub360 Ebeltoft behandler data i henhold til GDPR. Kontakt: Indsæt@mailadresse.dk')">Privatlivspolitik</a>
+      <a href="mailto:Indsæt@mailadresse.dk">Kontakt</a>
+      <a href="https://www.ebeltoftgolf.dk" target="_blank">Ebeltoft Golf Club</a>
+    </div>
+    <div class="ft-dev">Udviklet af <a href="https://nordicoperations.dk" target="_blank">Nordic Operations</a></div>
+  </div>
+</div>
+
+<!-- ===== NYHEDER ===== -->
+<div id="page-news" class="page">
+  <div class="ph"><div class="ph-ey">Nyheder</div><div class="ph-t">Seneste fra EGC</div><div class="ph-d">Hold dig opdateret om Ebeltoft Golf Club</div></div>
+  <div class="sec">
+    <div class="chip-row" id="news-chips">
+      <div class="chip active" data-cat="alle">Alle</div>
+      <div class="chip" data-cat="klub">Klub</div>
+      <div class="chip" data-cat="træning">Træning</div>
+      <div class="chip" data-cat="events">Events</div>
+      <div class="chip" data-cat="café">Café</div>
+    </div>
+    <div id="news-list"></div>
+  </div>
+</div>
+
+<!-- ===== TIP ===== -->
+<div id="page-tip" class="page">
+  <div class="ph"><div class="ph-ey">Ugentligt tip</div><div class="ph-t">Tip of the Week</div><div class="ph-d">Personlige råd fra Kennett Sørensen</div></div>
+  <div class="sec">
+    <div class="tip-card" style="margin-bottom:14px">
+      <div class="tip-ey"><span class="ldot"></span>Uge 24 · Denne uge</div>
+      <div class="tip-text">Tjek altid puttens kant inden du slår – en falsk læsning af kanten koster dig en stroke hver eneste gang.</div>
+      <div class="tip-by">Af <strong>Kennett Sørensen</strong> · PGA Teaching Pro</div>
+    </div>
+    <div style="margin-bottom:20px">
+      <div class="vph" style="height:190px"><div class="vbg"></div><div class="play-btn">▶</div><div class="vlabel">Uge 24 – Putting & kant-læsning</div><div class="vdur">⏱ 4:32 min</div></div>
+    </div>
+    <div class="sh" style="margin-top:8px"><div class="ey">Arkiv</div><div class="st">Tidligere tips</div></div>
+    <div class="tip-card" style="margin-bottom:11px;opacity:.85"><div class="tip-ey">Uge 23</div><div class="tip-text" style="font-size:1rem">Korte chip-shots: brug altid 9-jern frem for wedge, når greenen er fast.</div><div class="tip-by">Af <strong>Kennett Sørensen</strong></div></div>
+    <div class="tip-card" style="margin-bottom:11px;opacity:.75"><div class="tip-ey">Uge 22</div><div class="tip-text" style="font-size:1rem">Grip-tryk: hold grebet som en fugl – fast nok til at den ikke flyver, blød nok til at den lever.</div><div class="tip-by">Af <strong>Kennett Sørensen</strong></div></div>
+    <div class="tip-card" style="opacity:.65"><div class="tip-ey">Uge 21</div><div class="tip-text" style="font-size:1rem">Bunker: grav i sandet – ikke bolden. Sandets modstand løfter bolden ud af sig selv.</div><div class="tip-by">Af <strong>Kennett Sørensen</strong></div></div>
+
+    <div class="sec sec-navy" style="border-radius:var(--radius2);margin-top:20px;padding:20px">
+      <div class="ey">Har du et spørgsmål?</div>
+      <div class="st" style="margin-bottom:6px">Spørg Kennett direkte</div>
+      <div class="kennett-card" style="background:rgba(255,255,255,.07);padding:16px">
+        <div class="kc-top"><div class="kc-avatar" style="width:52px;height:52px;font-size:1.4rem">🏌️</div><div><div class="kc-name" style="font-size:1rem">Kennett Sørensen</div><div class="kc-role">PGA Pro · Ebeltoft Golf Club</div></div></div>
+        <div class="kc-btns">
+          <a class="kc-btn kc-btn-sand" href="tel:+4500000000">📞 Ring</a>
+          <a class="kc-btn kc-btn-outline" href="sms:+4500000000">💬 SMS</a>
+          <a class="kc-btn kc-btn-outline" href="mailto:Indsæt@mailadresse.dk">✉️ Mail</a>
+          <button class="kc-btn kc-btn-green" onclick="gotoPage('booking')">📲 Book tid</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EVENTS ===== -->
+<div id="page-events" class="page">
+  <div class="ph"><div class="ph-ey">Kalender</div><div class="ph-t">Events & Turneringer</div><div class="ph-d">Kommende aktiviteter på Ebeltoft Golf Club</div></div>
+  <div class="sec">
+    <div class="chip-row" id="ev-chips">
+      <div class="chip active" data-cat="alle">Alle</div>
+      <div class="chip" data-cat="turnering">Turnering</div>
+      <div class="chip" data-cat="begynder">Begynder</div>
+      <div class="chip" data-cat="firma">Firma</div>
+      <div class="chip" data-cat="socialt">Socialt</div>
+    </div>
+    <div id="ev-list"></div>
+    <div class="btn-row" style="justify-content:center;margin-top:6px">
+      <a class="ab btn-navy" href="https://www.golfbox.dk" target="_blank">📲 Tilmeld via GolfBox</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BOOK TRÆNING ===== -->
+<div id="page-booking" class="page">
+  <div class="ph"><div class="ph-ey">Book hos Kennett</div><div class="ph-t">Book Træning</div><div class="ph-d">Vælg dit forløb og kom i gang</div></div>
+  <div class="sec">
+    <div class="sh"><div class="ey">Vælg træning</div><div class="st">Hvad passer til dig?</div></div>
+    <div class="bk-card" onclick="openBookingGolfBox()"><div class="bk-icon">🎯</div><div><div class="bk-title">Individuel Lektion</div><div class="bk-desc">1:1 session med Kennett · Swinganalyse inkl.</div><div class="bk-price">Fra 650 kr. · 60 min</div></div><div class="bk-arrow">→</div></div>
+    <div class="bk-card" onclick="openBookingGolfBox()"><div class="bk-icon">🌱</div><div><div class="bk-title">Begynderforløb</div><div class="bk-desc">8 lektioner · Gruppe max 6 · Udstyr inkl.</div><div class="bk-price">Fra 2.995 kr. · 8 uger</div></div><div class="bk-arrow">→</div></div>
+    <div class="bk-card" onclick="openBookingGolfBox()"><div class="bk-icon">👦</div><div><div class="bk-title">Juniortræning</div><div class="bk-desc">7–17 år · Gruppe + individuel tilgang</div><div class="bk-price">Fra 395 kr. · pr. lektion</div></div><div class="bk-arrow">→</div></div>
+    <div class="bk-card" onclick="openBookingGolfBox()"><div class="bk-icon">⛳</div><div><div class="bk-title">Banelektion</div><div class="bk-desc">9 huller med Kennett · Praktisk vejledning</div><div class="bk-price">Fra 850 kr. · 3 timer</div></div><div class="bk-arrow">→</div></div>
+    <div class="bk-card" onclick="gotoPage('company')"><div class="bk-icon">💼</div><div><div class="bk-title">Firmaevent</div><div class="bk-desc">Skræddersyet firmadag · Fra 12 pers.</div><div class="bk-price">Fra 795 kr./person</div></div><div class="bk-arrow">→</div></div>
+    <div class="bk-card" onclick="openBookingGolfBox()"><div class="bk-icon">📊</div><div><div class="bk-title">Svinganalyse (TrackMan 4)</div><div class="bk-desc">Datadrevet feedback · Video + rapport</div><div class="bk-price">Fra 750 kr. · 45 min</div></div><div class="bk-arrow">→</div></div>
+
+    <a class="ab btn-green" href="https://www.golfbox.dk" target="_blank" style="width:100%;justify-content:center;padding:15px;font-size:1rem;margin-top:6px;display:flex">
+      🏌️ Log ind via GolfBox
+    </a>
+
+    <div style="margin-top:16px">
+      <div class="sh"><div class="ey">Kontakt</div><div class="st">Tal med Kennett</div></div>
+      <div class="kennett-card">
+        <div class="kc-top"><div class="kc-avatar">🏌️</div><div><div class="kc-name">Kennett Sørensen</div><div class="kc-role">PGA Teaching Professional · Ebeltoft Golf Club</div></div></div>
+        <div class="kc-btns">
+          <a class="kc-btn kc-btn-sand" href="tel:+4500000000">📞 Ring</a>
+          <a class="kc-btn kc-btn-outline" href="sms:+4500000000">💬 SMS</a>
+          <a class="kc-btn kc-btn-outline" href="mailto:Indsæt@mailadresse.dk">✉️ Mail</a>
+          <button class="kc-btn kc-btn-green" onclick="openBookingGolfBox()">🏌️ GolfBox</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ACADEMY ===== -->
+<div id="page-academy" class="page">
+  <div class="ph"><div class="ph-ey">Videolektioner</div><div class="ph-t">Golf Academy</div><div class="ph-d">Lær teknikken med Kennett Sørensen · PGA Pro</div></div>
+  <div class="sec">
+    <div class="ac-grid">
+      <div class="ac-mod"><div class="ac-img">⛳</div><div class="ac-body"><div class="ac-title">Putting</div><div class="ac-desc">Linje, tempo & kant-læsning</div></div></div>
+      <div class="ac-mod"><div class="ac-img" style="background:linear-gradient(135deg,#2d4f31,#3F6B43)">🏌️</div><div class="ac-body"><div class="ac-title">Chipping</div><div class="ac-desc">Fra rough og fairway</div></div></div>
+      <div class="ac-mod"><div class="ac-img" style="background:linear-gradient(135deg,#1a4060,#12324A)">🎯</div><div class="ac-body"><div class="ac-title">Pitch</div><div class="ac-desc">Kontrol og spin</div></div></div>
+      <div class="ac-mod"><div class="ac-img" style="background:linear-gradient(135deg,#c9a84c,#a08030)">⛏️</div><div class="ac-body"><div class="ac-title">Bunker</div><div class="ac-desc">Sand-escape teknik</div></div></div>
+      <div class="ac-mod"><div class="ac-img" style="background:linear-gradient(135deg,#3F6B43,#1a4060)">💪</div><div class="ac-body"><div class="ac-title">Driver</div><div class="ac-desc">Afstand og fairway-hold</div></div></div>
+      <div class="ac-mod"><div class="ac-img" style="background:linear-gradient(135deg,#4a1a4a,#2a0a3a)">🧭</div><div class="ac-body"><div class="ac-title">Course Mgmt</div><div class="ac-desc">Strategi og scorekort</div></div></div>
+      <div class="ac-mod" style="grid-column:1/-1"><div class="ac-img" style="height:70px;background:linear-gradient(135deg,#1C1008,#3D2B1A)">🧠</div><div class="ac-body"><div class="ac-title">Mental Golf</div><div class="ac-desc">Fokus, rutiner og tournament mindset</div></div></div>
+    </div>
+    <div style="margin-top:22px"><div class="ey" style="margin-bottom:11px">Seneste videoer</div>
+      <div class="vph" style="height:175px;margin-bottom:9px"><div class="vbg"></div><div class="play-btn">▶</div><div class="vlabel">Putting – Kant-læsning for begyndere</div><div class="vdur">⏱ 5:12 min</div></div>
+      <div class="vph" style="height:135px;margin-bottom:9px"><div class="vbg" style="opacity:.7"></div><div class="play-btn" style="width:44px;height:44px;font-size:1.1rem">▶</div><div class="vlabel">Driver – Perfekt address-position</div><div class="vdur">⏱ 3:45 min</div></div>
+      <div class="vph" style="height:135px"><div class="vbg" style="opacity:.6"></div><div class="play-btn" style="width:44px;height:44px;font-size:1.1rem">▶</div><div class="vlabel">Bunker – Sand-escape i 3 trin</div><div class="vdur">⏱ 4:01 min</div></div>
+    </div>
+    <div class="kennett-card" style="margin-top:20px">
+      <div class="kc-top"><div class="kc-avatar" style="width:52px;height:52px;font-size:1.4rem">🏌️</div><div><div class="kc-name" style="font-size:1rem">Kennett Sørensen</div><div class="kc-role">PGA Pro · Book privat lektion</div></div></div>
+      <div class="kc-btns"><a class="kc-btn kc-btn-sand" href="tel:+4500000000">📞 Ring</a><a class="kc-btn kc-btn-outline" href="sms:+4500000000">💬 SMS</a><a class="kc-btn kc-btn-outline" href="mailto:Indsæt@mailadresse.dk">✉️ Mail</a><button class="kc-btn kc-btn-green" onclick="gotoPage('booking')">📲 Book</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BEGYNDER ===== -->
+<div id="page-beginner" class="page">
+  <div class="ph"><div class="ph-ey">Ny til golf?</div><div class="ph-t">Begynderunivers</div><div class="ph-d">Alt du skal bruge for at komme godt i gang</div></div>
+  <div class="sec">
+    <div class="tip-card" style="margin-bottom:18px"><div class="tip-ey">👋 Velkommen</div><div class="tip-text" style="font-size:1.05rem">Golf er for alle. Hos Ebeltoft Golf Club er du sikret en varm velkomst – uanset alder og erfaring.</div><div class="tip-by">Af <strong>Kennett Sørensen</strong> · Din personlige træner</div></div>
+    <div class="ey" style="margin-bottom:11px">Vigtige links</div>
+    <a class="bl" href="https://www.golfbox.dk" target="_blank"><div class="bl-icon">📲</div><div><div class="bl-title">GolfBox</div><div class="bl-sub">Tilmeld turneringer · Se dit HCP</div></div><div class="bl-arr">→</div></a>
+    <a class="bl" href="https://www.glfr.io" target="_blank"><div class="bl-icon">📍</div><div><div class="bl-title">GLFR App</div><div class="bl-sub">GPS-rangefinder og scorekort</div></div><div class="bl-arr">→</div></a>
+    <a class="bl" href="https://mit.golf" target="_blank"><div class="bl-icon">🏌️</div><div><div class="bl-title">Mit Golf</div><div class="bl-sub">Dansk Golf Unions officielle platform</div></div><div class="bl-arr">→</div></a>
+    <a class="bl" href="https://www.randa.org/en/rules-of-golf" target="_blank"><div class="bl-icon">📖</div><div><div class="bl-title">R&amp;A Regler</div><div class="bl-sub">De officielle golfregler forklaret enkelt</div></div><div class="bl-arr">→</div></a>
+    <a class="bl" href="https://www.youtube.com/@MeandMyGolf" target="_blank"><div class="bl-icon">🎥</div><div><div class="bl-title">Træningsvideoer</div><div class="bl-sub">Anbefalede YouTube-guides til begyndere</div></div><div class="bl-arr">→</div></a>
+    <a class="bl" href="https://www.golfhq.dk" target="_blank"><div class="bl-icon">⛳</div><div><div class="bl-title">DGU – Dansk Golf Union</div><div class="bl-sub">Regler, handicap og nyheder</div></div><div class="bl-arr">→</div></a>
+
+    <div style="margin-top:20px"><div class="ey" style="margin-bottom:11px">FAQ</div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Hvad koster et begynderforløb?</div><div class="faq-a"><div class="faq-ai">Begynderforløbet koster fra 2.995 kr. og indeholder 8 lektioner med Kennett, gratis udlån af udstyr og 3 måneders prøvemedlemskab.</div></div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Skal jeg have eget udstyr?</div><div class="faq-a"><div class="faq-ai">Nej – Ebeltoft Golf Club stiller køller og bolde til rådighed i hele begynderperioden.</div></div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Hvad er et HCP, og hvornår får jeg det?</div><div class="faq-a"><div class="faq-ai">HCP (handicap) er dit officielle golfmål. Du får det efter dine første 3 scorekort – typisk inden for 4–6 runder.</div></div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Kan jeg komme alene?</div><div class="faq-a"><div class="faq-ai">Absolut – mange af vores bedste holdkammerater startede som totale fremmede. Vi sørger for en god stemning fra dag ét.</div></div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Hvornår starter næste hold?</div><div class="faq-a"><div class="faq-ai">Næste hold starter 1. august 2026. Der er max 6 pladser – tilmeld dig nu for at sikre din plads.</div></div></div>
+    </div>
+
+    <div class="kennett-card" style="margin-top:20px">
+      <div class="kc-top"><div class="kc-avatar" style="width:52px;height:52px;font-size:1.4rem">🏌️</div><div><div class="kc-name" style="font-size:1rem">Kennett Sørensen</div><div class="kc-role">PGA Pro · Klar til at hjælpe dig i gang</div></div></div>
+      <div class="kc-btns"><a class="kc-btn kc-btn-sand" href="tel:+4500000000">📞 Ring</a><a class="kc-btn kc-btn-outline" href="sms:+4500000000">💬 SMS</a><a class="kc-btn kc-btn-outline" href="mailto:Indsæt@mailadresse.dk">✉️ Mail</a><button class="kc-btn kc-btn-green" onclick="gotoPage('booking')">📲 Book</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BANEGUIDE ===== -->
+<div id="page-course" class="page">
+  <div class="ph"><div class="ph-ey">18 Huller · Par 72</div><div class="ph-t">Baneguide</div><div class="ph-d">Kennetts tips – hul for hul · Klik for detaljer</div></div>
+  <div class="sec"><div id="hole-list"></div></div>
+</div>
+
+<!-- ===== CAFE TO ===== -->
+<div id="page-cafe" class="page">
+  <div class="cafe-hdr"><div class="cafe-logo-big">☕</div><div class="cafe-name-big">Café To</div><div class="cafe-tag">Frisk mad · Lokale råvarer · Udsigt over banen</div></div>
+
+  <div class="sec" style="background:#FFF8F2">
+    <div class="sh"><div class="ey" style="color:#8B4513">🍽️ Dagens ret</div><div class="st" style="color:#3D2B1A">Stegt flæsk med persillesovs</div><div class="sd" style="color:#7a5a3a">Klassisk dansk ret med hjemmelavet sovs og nye kartofler fra Mols</div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:var(--radius);padding:15px;border:1px solid #E8D5C0;margin-top:12px">
+      <div><div style="font-size:.72rem;color:var(--muted)">Inkl. brød og smør</div><div style="font-weight:700;color:#3D2B1A;font-size:.82rem">🕐 Serveres: 11:30 – 14:00</div></div>
+      <div style="font-family:var(--fd);font-size:1.55rem;font-weight:900;color:var(--green)">165 kr.</div>
+    </div>
+
+    <div class="ugenstilbud" style="margin-top:14px">
+      <div class="ut-ey">⭐ Ugens tilbud</div>
+      <div class="ut-title">Golf & Brunch Pakke</div>
+      <div class="ut-desc">9 huller + Café To brunch til favorabel pris. Booking kræves.</div>
+      <div class="ut-price"><span class="ut-orig">290 kr.</span><span class="ut-new">225 kr.</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="ey">Menu</div><div class="st">Menukortet</div></div>
+    <div style="font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:7px">🍳 Morgenmad & Brunch</div>
+    <div class="menu-item"><div><div class="min-name">Café To Brunch</div><div class="min-desc">Æg, bacon, rugbrød, juice, kaffe</div></div><div class="min-price">145 kr.</div></div>
+    <div class="menu-item"><div><div class="min-name">Havregrød m. bær</div><div class="min-desc">Naturell havregrød, friske bær, honning</div></div><div class="min-price">75 kr.</div></div>
+    <div class="menu-item"><div><div class="min-name">Croissant + kaffe</div><div class="min-desc">Friskbagt, smør, syltetøj</div></div><div class="min-price">58 kr.</div></div>
+    <div style="font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:14px 0 7px">🥗 Frokost</div>
+    <div class="menu-item"><div><div class="min-name">Dagens ret</div><div class="min-desc">Skifter dagligt – se tavlen</div></div><div class="min-price">165 kr.</div></div>
+    <div class="menu-item"><div><div class="min-name">Klubsandwich</div><div class="min-desc">Kylling, bacon, tomat, mayo, pommes frites</div></div><div class="min-price">135 kr.</div></div>
+    <div class="menu-item"><div><div class="min-name">Smørrebrød (3 stk.)</div><div class="min-desc">Valgfri pålæg – spørg personalet</div></div><div class="min-price">115 kr.</div></div>
+    <div class="menu-item"><div><div class="min-name">Golfer's Wrap</div><div class="min-desc">Kylling, avocado, salat, dressing – on the go</div></div><div class="min-price">95 kr.</div></div>
+    <div style="font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:14px 0 7px">☕ Drikkevarer</div>
+    <div class="menu-item"><div><div class="min-name">Kaffe / Te</div><div class="min-desc">Barista-brygget</div></div><div class="min-price">45 kr.</div></div>
+    <div class="menu-item"><div><div class="min-name">Øl – Ebeltoft Gæstebryggeri</div><div class="min-desc">Lokalt bryg · 33 cl</div></div><div class="min-price">65 kr.</div></div>
+    <div class="menu-item"><div><div class="min-name">Sodavand</div><div class="min-desc">Vand, Cola, Sprite</div></div><div class="min-price">35 kr.</div></div>
+    <div class="menu-item"><div><div class="min-name">Sportsdrink</div><div class="min-desc">Isotonisk · Perfekt til 18 huller</div></div><div class="min-price">40 kr.</div></div>
+  </div>
+
+  <div class="sec sec-alt">
+    <div class="sh"><div class="ey">Åbningstider</div><div class="st">Hvornår er vi åbne?</div></div>
+    <div class="hours-row"><span class="hours-day">Mandag – Fredag</span><span class="hours-open">08:00 – 18:00</span></div>
+    <div class="hours-row"><span class="hours-day">Lørdag</span><span class="hours-open">07:30 – 17:00</span></div>
+    <div class="hours-row"><span class="hours-day">Søndag</span><span class="hours-open">08:00 – 16:00</span></div>
+    <div class="hours-row"><span class="hours-day">Helligdage</span><span class="hours-open">09:00 – 15:00</span></div>
+    <div style="background:rgba(63,107,67,.1);border-radius:var(--radius);padding:11px;margin-top:11px;font-size:.79rem;color:var(--green);font-weight:600">✅ Åben nu · Lukker kl. 18:00</div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="ey">Kontakt Café To</div><div class="st">Ring, skriv eller find os</div></div>
+    <div class="btn-row">
+      <a class="ab btn-navy" href="tel:+4586341234">📞 Ring til Café To</a>
+      <a class="ab btn-green" href="mailto:cafe@ebeltoftgolf.dk">✉️ Send mail</a>
+      <a class="ab btn-sand" href="https://maps.google.com/?q=Ebeltoft+Golf+Club,+Denmark" target="_blank">🗺️ Google Maps</a>
+    </div>
+    <div style="margin-top:14px">
+      <a href="https://maps.google.com/?q=Ebeltoft+Golf+Club,+Denmark" target="_blank">
+        <div class="map-ph"><div style="font-size:2.2rem">📍</div><div style="font-size:.85rem;color:var(--green);font-weight:600">Café To · Ebeltoft Golf Club</div><div style="font-size:.7rem;color:var(--green);opacity:.7">Åbn i Google Maps →</div></div>
+      </a>
+    </div>
+    <div class="kennett-card" style="margin-top:16px">
+      <div class="kc-top"><div class="kc-avatar" style="width:52px;height:52px;font-size:1.4rem">🏌️</div><div><div class="kc-name" style="font-size:1rem">Kennett Sørensen</div><div class="kc-role">PGA Pro · Book bord eller træning</div></div></div>
+      <div class="kc-btns"><a class="kc-btn kc-btn-sand" href="tel:+4500000000">📞 Ring</a><a class="kc-btn kc-btn-outline" href="sms:+4500000000">💬 SMS</a><a class="kc-btn kc-btn-outline" href="mailto:Indsæt@mailadresse.dk">✉️ Mail</a><button class="kc-btn kc-btn-green" onclick="gotoPage('booking')">📲 Book</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TURIST ===== -->
+<div id="page-tourist" class="page">
+  <div class="ph"><div class="ph-ey">Ebeltoft & Mols</div><div class="ph-t">Turist & Oplevelser</div><div class="ph-d">Golf kombineret med det bedste fra Djursland</div></div>
+  <div class="sec">
+    <div class="sh"><div class="ey">Seværdigheder</div><div class="st">Oplev Ebeltoft</div></div>
+    <div class="att-card"><div class="iph att-img" style="background:linear-gradient(135deg,#1a3060,#2a5090)"><span>⚓</span></div><div class="att-body"><div class="att-cat">Museum · 2 km fra EGC</div><div class="att-title">Fregatten Jylland</div><div class="att-desc">Verdens bedst bevarede dampfregat fra 1860. En unik oplevelse for hele familien ved Ebeltoft Havn.</div><div class="btn-row" style="margin-top:9px"><a class="ab btn-outline" href="https://www.fregatten-jylland.dk" target="_blank" style="font-size:.75rem;padding:7px 13px">Besøg →</a><a class="ab btn-outline" href="https://maps.google.com/?q=Fregatten+Jylland+Ebeltoft" target="_blank" style="font-size:.75rem;padding:7px 13px">🗺️ Find vej</a></div></div></div>
+    <div class="att-card"><div class="iph att-img" style="background:linear-gradient(135deg,#1a3a5c,#4a7a9b)"><span>🎨</span></div><div class="att-body"><div class="att-cat">Kunst · 1 km fra EGC</div><div class="att-title">Glasmuseet Ebeltoft</div><div class="att-desc">Nordeuropas ledende glasmuseum med internationale udstillinger og glasblæser-workshops.</div><div class="btn-row" style="margin-top:9px"><a class="ab btn-outline" href="https://www.glasmuseet.dk" target="_blank" style="font-size:.75rem;padding:7px 13px">Besøg →</a><a class="ab btn-outline" href="https://maps.google.com/?q=Glasmuseet+Ebeltoft" target="_blank" style="font-size:.75rem;padding:7px 13px">🗺️ Find vej</a></div></div></div>
+    <div class="att-card"><div class="iph att-img" style="background:linear-gradient(135deg,#2d5a27,#4a8f44)"><span>🏔️</span></div><div class="att-body"><div class="att-cat">Natur · Direkte fra EGC</div><div class="att-title">Mols Bjerge</div><div class="att-desc">Nationalpark med bølgede bakker, hede og kystlandskab. Vandreture med panoramaudsigt over Ebeltoft Vig.</div><div class="btn-row" style="margin-top:9px"><a class="ab btn-outline" href="https://www.molsbjerge.dk" target="_blank" style="font-size:.75rem;padding:7px 13px">Nationalpark →</a><a class="ab btn-outline" href="https://maps.google.com/?q=Mols+Bjerge+Nationalpark" target="_blank" style="font-size:.75rem;padding:7px 13px">🗺️ Find vej</a></div></div></div>
+    <div class="att-card"><div class="iph att-img" style="background:linear-gradient(135deg,#1a4060,#2a7090)"><span>🌊</span></div><div class="att-body"><div class="att-cat">Havn · 3 km fra EGC</div><div class="att-title">Ebeltoft Havn</div><div class="att-desc">Charmerende gammel købstadshavn med fisk-og-chips, caféer og panoramaudsigt over Kattegat.</div><div class="btn-row" style="margin-top:9px"><a class="ab btn-outline" href="https://maps.google.com/?q=Ebeltoft+Havn" target="_blank" style="font-size:.75rem;padding:7px 13px">🗺️ Find vej</a></div></div></div>
+  </div>
+
+  <div class="sec sec-alt">
+    <div class="sh"><div class="ey">Golfophold</div><div class="st">Overnatning & Golf-pakker</div></div>
+    <div style="background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:15px;display:flex;align-items:center;gap:13px;margin-bottom:9px;cursor:pointer" onclick="openModal('🏨','Hotel Ebeltoft Strand','4-stjernet hotel med udsigt over Ebeltoft Vig. Golf-pakker tilgængelig inkl. greenfee og Café To middag. 2 km fra Ebeltoft Golf Club.','<a class=&quot;ab btn-navy&quot; href=&quot;tel:+4586340500&quot;>📞 Ring til hotellet</a><a class=&quot;ab btn-green&quot; href=&quot;https://maps.google.com/?q=Hotel+Ebeltoft+Strand&quot; target=&quot;_blank&quot;>🗺️ Find vej</a>')">
+      <div style="width:46px;height:46px;background:var(--bg);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0">🏨</div>
+      <div style="flex:1"><div style="font-weight:700;font-size:.88rem;color:var(--navy)">Hotel Ebeltoft Strand</div><div style="font-size:.73rem;color:var(--muted);margin-top:2px">4-stjernet · Golf-pakker · 2 km fra EGC</div></div>
+      <div style="color:var(--green);font-weight:700">→</div>
+    </div>
+    <div style="background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:15px;display:flex;align-items:center;gap:13px;margin-bottom:9px;cursor:pointer" onclick="openModal('🏡','Mols Bjerge Camping','Naturskøn camping med telt, autocamper og hytter direkte i Mols Bjerge Nationalpark. 10 min fra Ebeltoft Golf Club. Ideel base for golf + natur.','<a class=&quot;ab btn-navy&quot; href=&quot;tel:+4586300100&quot;>📞 Ring til camping</a><a class=&quot;ab btn-green&quot; href=&quot;https://maps.google.com/?q=Mols+Bjerge+Camping&quot; target=&quot;_blank&quot;>🗺️ Find vej</a>')">
+      <div style="width:46px;height:46px;background:var(--bg);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0">🏡</div>
+      <div style="flex:1"><div style="font-weight:700;font-size:.88rem;color:var(--navy)">Mols Bjerge Camping</div><div style="font-size:.73rem;color:var(--muted);margin-top:2px">Telt, autocamper og hytter · Naturskønt</div></div>
+      <div style="color:var(--green);font-weight:700">→</div>
+    </div>
+    <div style="background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:15px;display:flex;align-items:center;gap:13px;cursor:pointer" onclick="openModal('🏠','Feriehuse ved Ebeltoft Vig','Lej et feriehus ved Ebeltoft Vig og bo midt i naturen. Perfekt til golfferie for 2–8 personer. Danland og Sol og Strand har udvalg i området.','<a class=&quot;ab btn-navy&quot; href=&quot;https://www.danland.dk&quot; target=&quot;_blank&quot;>Danland →</a><a class=&quot;ab btn-green&quot; href=&quot;https://www.sologstrand.dk&quot; target=&quot;_blank&quot;>Sol og Strand →</a>')">
+      <div style="width:46px;height:46px;background:var(--bg);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0">🏠</div>
+      <div style="flex:1"><div style="font-weight:700;font-size:.88rem;color:var(--navy)">Feriehuse</div><div style="font-size:.73rem;color:var(--muted);margin-top:2px">Ebeltoft Vig · 2–8 pers. · Golfferie</div></div>
+      <div style="color:var(--green);font-weight:700">→</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><div class="ey">Lokalkortet</div><div class="st">Find alt i Ebeltoft</div></div>
+    <a href="https://maps.google.com/?q=Ebeltoft+Golf+Club,+Denmark" target="_blank">
+      <div class="map-ph"><div style="font-size:2.2rem">🗺️</div><div style="font-size:.85rem;color:var(--green);font-weight:600">Interaktivt kort · Ebeltoft-området</div><div style="font-size:.7rem;color:var(--green);opacity:.7">Golf · Seværdigheder · Overnatning · Åbn i Google Maps</div></div>
+    </a>
+    <div class="btn-row" style="margin-top:11px;flex-wrap:wrap">
+      <a class="ab btn-navy" href="https://maps.google.com/?q=Ebeltoft+Golf+Club" target="_blank">⛳ Golf Club</a>
+      <a class="ab btn-green" href="https://maps.google.com/?q=Fregatten+Jylland+Ebeltoft" target="_blank">⚓ Fregatten</a>
+      <a class="ab btn-sand" href="https://maps.google.com/?q=Glasmuseet+Ebeltoft" target="_blank">🎨 Glasmuseet</a>
+      <a class="ab btn-outline" href="https://maps.google.com/?q=Mols+Bjerge+Nationalpark" target="_blank">🏔️ Mols Bjerge</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COMPANY DAYS ===== -->
+<div id="page-company" class="page">
+  <div class="ph" style="background:linear-gradient(160deg,#0a1a2a 0%,var(--navy) 100%)"><div class="ph-ey">Erhverv & Events</div><div class="ph-t">Company Days</div><div class="ph-d">Uforglemmelige firmaoplevelser ved Ebeltoft Vig</div></div>
+  <div class="sec sec-navy">
+    <div class="sh"><div class="ey">Hvad vi tilbyder</div><div class="st">Golf & Gourmet-pakker</div></div>
+    <div class="co-feat"><div class="co-icon">⛳</div><div><div class="co-title">Firmagolfdag</div><div class="co-desc">18 eller 9 huller med professionel tilrettelæggelse. Ingen golferfaring nødvendig.</div></div></div>
+    <div class="co-feat"><div class="co-icon">🤝</div><div><div class="co-title">Teambuilding på banen</div><div class="co-desc">Scramble-format, shotgun-start og præmier. Ideelt for grupper uden forudgående erfaring.</div></div></div>
+    <div class="co-feat"><div class="co-icon">🏆</div><div><div class="co-title">Sponsorarrangementer</div><div class="co-desc">Turnerings-sponsorater, hole-in-one-præmier og branding direkte på banen.</div></div></div>
+    <div class="co-feat"><div class="co-icon">🍽️</div><div><div class="co-title">Golf & Gourmet</div><div class="co-desc">Fuld firmamiddag i Café To med udsigt over banen. Fra enkel frokost til 3-retters menu.</div></div></div>
+    <div class="co-feat"><div class="co-icon">🎯</div><div><div class="co-title">Træningsklinik med Kennett</div><div class="co-desc">Alle deltagere slår boldene i gang. Kennett sørger for sjov og succes – uanset niveau.</div></div></div>
+    <div style="background:rgba(220,199,161,.1);border:1px solid rgba(220,199,161,.2);border-radius:var(--radius);padding:13px;margin-top:8px;display:flex;align-items:center;gap:10px">
+      <div style="font-size:1.25rem">💰</div>
+      <div><div style="font-weight:700;color:#fff;font-size:.88rem">Pakker fra 795 kr./person</div><div style="font-size:.72rem;color:rgba(255,255,255,.5)">Minimum 12 deltagere · Inkl. greenfee, Kennett-intro og let forplejning</div></div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sh"><div class="ey">Kontakt</div><div class="st">Send en forespørgsel</div></div>
+    <div class="fg"><label class="flbl">Virksomhed</label><input class="finp" type="text" placeholder="Virksomhedens navn"></div>
+    <div class="fg"><label class="flbl">Kontaktperson</label><input class="finp" type="text" placeholder="Dit fulde navn"></div>
+    <div class="fg"><label class="flbl">Telefon</label><input class="finp" type="tel" placeholder="+45 xx xx xx xx"></div>
+    <div class="fg"><label class="flbl">E-mail</label><input class="finp" type="email" placeholder="din@virksomhed.dk"></div>
+    <div class="fg"><label class="flbl">Antal deltagere</label><select class="fsel"><option>Vælg antal</option><option>12–20</option><option>21–40</option><option>41–80</option><option>80+</option></select></div>
+    <div class="fg"><label class="flbl">Ønsket dato</label><input class="finp" type="date"></div>
+    <div class="fg"><label class="flbl">Besked</label><textarea class="ftxa" placeholder="Fortæl os om jeres ønsker og forventninger..."></textarea></div>
+    <button class="ab btn-navy" style="width:100%;justify-content:center;padding:14px;font-size:.95rem" onclick="alert('Tak for din forespørgsel! Kennett vender tilbage inden for 24 timer.')">📤 Send forespørgsel</button>
+    <div class="btn-row" style="justify-content:center;margin-top:14px">
+      <a class="ab btn-green" href="tel:+4500000000">📞 Ring direkte</a>
+      <a class="ab btn-sand" href="mailto:Indsæt@mailadresse.dk">✉️ Mail</a>
+    </div>
+    <div class="kennett-card" style="margin-top:16px">
+      <div class="kc-top"><div class="kc-avatar" style="width:52px;height:52px;font-size:1.4rem">🏌️</div><div><div class="kc-name" style="font-size:1rem">Kennett Sørensen</div><div class="kc-role">PGA Pro · Ansvarlig for firmaevents</div></div></div>
+      <div class="kc-btns"><a class="kc-btn kc-btn-sand" href="tel:+4500000000">📞 Ring</a><a class="kc-btn kc-btn-outline" href="sms:+4500000000">💬 SMS</a><a class="kc-btn kc-btn-outline" href="mailto:Indsæt@mailadresse.dk">✉️ Mail</a><button class="kc-btn kc-btn-green" onclick="gotoPage('booking')">📲 Book</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TRAINER ===== -->
+<div id="page-trainer" class="page">
+  <div class="tr-hero">
+    <div class="tr-av">🏌️</div>
+    <div class="tr-name">Kennett Sørensen</div>
+    <div class="tr-role">PGA Teaching Professional · Ebeltoft Golf Club</div>
+    <div class="badge-row"><span class="badge badge-sand">PGA Certified</span><span class="badge">TrackMan 4</span><span class="badge">20+ års erfaring</span><span class="badge badge-sand">DGU Godkendt</span></div>
+    <div class="kennett-card" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15)">
+      <div class="kc-btns">
+        <a class="kc-btn kc-btn-sand" href="tel:+4500000000">📞 Ring</a>
+        <a class="kc-btn kc-btn-outline" href="sms:+4500000000">💬 SMS</a>
+        <a class="kc-btn kc-btn-outline" href="mailto:Indsæt@mailadresse.dk">✉️ Mail</a>
+        <button class="kc-btn kc-btn-green" onclick="gotoPage('booking')">📲 Book tid</button>
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sh"><div class="ey">Om Kennett</div><div class="st">Erfaring & baggrund</div></div>
+    <p style="font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:11px">Kennett Sørensen er en PGA-certificeret golfprofessional med mere end 20 års erfaring som underviser. Han har hjulpet hundredvis af spillere – fra totale begyndere til klubmestre – med at nå deres golfmål.</p>
+    <p style="font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:11px">Specialiseret i teknisk swinganalyse med TrackMan 4. Særlig styrke i at gøre kompleks teknik forståelig for alle niveauer.</p>
+    <p style="font-size:.88rem;color:var(--muted);line-height:1.7">Baseret på Ebeltoft Golf Club – underviser dagligt på bane, øvebane og i simulator hele året rundt.</p>
+  </div>
+  <div class="sec sec-alt">
+    <div class="sh"><div class="ey">Specialer</div><div class="st">Hvad Kennett er bedst til</div></div>
+    <div class="cg">
+      <div style="background:#fff;border-radius:var(--radius);padding:13px;box-shadow:var(--shadow);display:flex;gap:11px;align-items:flex-start"><div style="font-size:1.3rem">🔬</div><div><div style="font-weight:700;font-size:.88rem;color:var(--navy);margin-bottom:3px">TrackMan Svinganalyse</div><div style="font-size:.77rem;color:var(--muted);line-height:1.45">Datadrevet feedback på din swing og boldflugt. Video + rapport.</div></div></div>
+      <div style="background:#fff;border-radius:var(--radius);padding:13px;box-shadow:var(--shadow);display:flex;gap:11px;align-items:flex-start"><div style="font-size:1.3rem">🌱</div><div><div style="font-weight:700;font-size:.88rem;color:var(--navy);margin-bottom:3px">Begynderuddannelse</div><div style="font-size:.77rem;color:var(--muted);line-height:1.45">Strukturerede forløb der tager dig fra 0 til HCP-spiller.</div></div></div>
+      <div style="background:#fff;border-radius:var(--radius);padding:13px;box-shadow:var(--shadow);display:flex;gap:11px;align-items:flex-start"><div style="font-size:1.3rem">⛳</div><div><div style="font-weight:700;font-size:.88rem;color:var(--navy);margin-bottom:3px">Short Game Specialist</div><div style="font-size:.77rem;color:var(--muted);line-height:1.45">Putting, chipping og bunker – de 60% der afgør dit score.</div></div></div>
+      <div style="background:#fff;border-radius:var(--radius);padding:13px;box-shadow:var(--shadow);display:flex;gap:11px;align-items:flex-start"><div style="font-size:1.3rem">🧠</div><div><div style="font-weight:700;font-size:.88rem;color:var(--navy);margin-bottom:3px">Mental Coaching</div><div style="font-size:.77rem;color:var(--muted);line-height:1.45">Spil dit bedste under pres – fokusstrategier og rutine-træning.</div></div></div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sh"><div class="ey">Testimonials</div><div class="st">Hvad eleverne siger</div></div>
+    <div class="testi"><div class="testi-text">"Kennett fik mig fra komplet nybegynder til mit første HCP på kun 6 måneder. Hans tålmodighed er usædvanlig."</div><div class="testi-by">— Lars M., Rønde · HCP 28</div></div>
+    <div class="testi" style="border-left-color:var(--navy)"><div class="testi-text">"TrackMan-sessionen med Kennett ændrede mit syn på min swing fuldstændigt. Anbefales til alle."</div><div class="testi-by">— Marianne K., Ebeltoft · HCP 12</div></div>
+    <div class="testi" style="border-left-color:var(--sand2)"><div class="testi-text">"Vores firmaevent med Kennett var årets højdepunkt. Han sikrede at alle – også ikke-golfere – havde det fantastisk."</div><div class="testi-by">— Peter H., Direktør · Aarhus</div></div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="page-dashboard" class="page">
+  <div class="ph" style="background:linear-gradient(160deg,#0a1a2a 0%,var(--navy) 100%)"><div class="ph-ey">Admin · Demo</div><div class="ph-t">Dashboard</div><div class="ph-d">Sæson 2026 · Ebeltoft Golf Club</div></div>
+
+  <div id="dash-login">
+    <div class="dl-icon">🔒</div>
+    <div class="dl-title">Adgangskode</div>
+    <div class="dl-sub">Indtast din 4-cifrede kode for at åbne dashboardet</div>
+    <div class="dl-code-wrap">
+      <input class="dl-digit" type="password" maxlength="1" id="d1" oninput="dashInput(this,'d2')">
+      <input class="dl-digit" type="password" maxlength="1" id="d2" oninput="dashInput(this,'d3')">
+      <input class="dl-digit" type="password" maxlength="1" id="d3" oninput="dashInput(this,'d4')">
+      <input class="dl-digit" type="password" maxlength="1" id="d4" oninput="dashInput(this,null)">
+    </div>
+    <div class="dl-err" id="dl-err"></div>
+    <button class="dl-btn" onclick="checkDashCode()">Åbn Dashboard →</button>
+    <div style="margin-top:16px;font-size:.75rem;color:var(--muted)">Demo-adgang: <strong>2026</strong></div>
+  </div>
+
+  <div id="dash-content" class="sec">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div><div class="ey">Sæson 2026</div><div class="st">KPI Oversigt</div></div>
+      <button onclick="logoutDash()" style="font-size:.75rem;font-weight:600;color:var(--muted);background:var(--bg);border-radius:8px;padding:6px 12px;border:1px solid var(--border)">Log ud</button>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-val">142</div><div class="kpi-lab">Lektioner i år</div><div class="kpi-delta ku">↑ +18% vs. 2025</div></div>
+      <div class="kpi-card kn"><div class="kpi-val">38</div><div class="kpi-lab">Aktive elever</div><div class="kpi-delta ku">↑ +5 denne måned</div></div>
+      <div class="kpi-card ks"><div class="kpi-val">24</div><div class="kpi-lab">Nye leads</div><div class="kpi-delta ku">↑ +8 via app</div></div>
+      <div class="kpi-card kr"><div class="kpi-val">891</div><div class="kpi-lab">Greenfee-gæster</div><div class="kpi-delta ku">↑ Rekord</div></div>
+      <div class="kpi-card" style="grid-column:1/-1;border-left-color:var(--sand2)"><div class="kpi-val">7</div><div class="kpi-lab">Events afviklet · 3 planlagt</div><div class="kpi-delta ku">↑ Næste: EGC Membersmatch 28/6</div></div>
+    </div>
+    <div class="chart-area"><div class="chart-title">📊 Bookinger pr. måned</div><div class="bar-chart" id="ch1"></div></div>
+    <div class="chart-area"><div class="chart-title">🌱 Begyndere tilmeldt</div><div class="bar-chart" id="ch2"></div></div>
+    <div class="chart-area"><div class="chart-title">📅 Events pr. kvartal</div><div class="bar-chart" id="ch3"></div></div>
+    <div style="background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+      <div style="padding:13px 15px;font-weight:700;font-size:.88rem;color:var(--navy);border-bottom:1px solid var(--border)">📋 Seneste aktivitet</div>
+      <div id="act-log"></div>
+    </div>
+    <div class="kennett-card" style="margin-top:16px">
+      <div class="kc-top"><div class="kc-avatar" style="width:52px;height:52px;font-size:1.4rem">🏌️</div><div><div class="kc-name" style="font-size:1rem">Kennett Sørensen</div><div class="kc-role">PGA Pro · Administrator</div></div></div>
+      <div class="kc-btns"><a class="kc-btn kc-btn-sand" href="tel:+4500000000">📞 Ring</a><a class="kc-btn kc-btn-outline" href="sms:+4500000000">💬 SMS</a><a class="kc-btn kc-btn-outline" href="mailto:Indsæt@mailadresse.dk">✉️ Mail</a><button class="kc-btn kc-btn-green" onclick="gotoPage('booking')">📲 Book</button></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div id="tabbar">
+  <div class="ti active" onclick="gotoPage('home')" id="tab-home"><span class="ticon">🏠</span><span>Hjem</span></div>
+  <div class="ti" onclick="gotoPage('news')" id="tab-news"><span class="ticon">📰</span><span>Nyheder</span></div>
+  <div class="ti" onclick="gotoPage('tip')" id="tab-tip"><span class="ticon">💡</span><span>Tip</span></div>
+  <div class="ti" onclick="gotoPage('events')" id="tab-events"><span class="ticon">📅</span><span>Events</span></div>
+  <div class="ti" onclick="openDrawer()" id="tab-more"><span class="ticon">⋯</span><span>Mere</span></div>
+</div>
+
+<script>
+const allPages=['home','news','tip','events','booking','academy','beginner','course','cafe','tourist','company','trainer','dashboard'];
+const tabIds=['home','news','tip','events'];
+
+function gotoPage(id){
+  allPages.forEach(p=>{const e=document.getElementById('page-'+p);if(e)e.classList.remove('active')});
+  const t=document.getElementById('page-'+id);if(t){t.classList.add('active');window.scrollTo(0,0)}
+  tabIds.forEach(t=>{const e=document.getElementById('tab-'+t);if(e)e.classList.remove('active')});
+  const at=document.getElementById('tab-'+id);if(at)at.classList.add('active');
+  closeDrawer();
+  if(id==='dashboard'&&document.getElementById('dash-content').style.display==='block')buildCharts();
+}
+
+function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('drawer-overlay').classList.add('open')}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('drawer-overlay').classList.remove('open')}
+
+function toggleFaq(el){const was=el.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!was)el.classList.add('open')}
+
+function openModal(icon,title,desc,btnsHtml){
+  document.getElementById('modal-icon').textContent=icon;
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-desc').textContent=desc;
+  document.getElementById('modal-btns').innerHTML=btnsHtml;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open')}
+
+const newsData=[
+  {cat:'begynder',tag:'Begynder',date:'10. juni 2026',title:'Ny begyndersæson åbner 1. august – tilmeld dig nu',exc:'Kom i gang med golf i sommerens smukkeste omgivelser. Begynderforløbet rummer 8 lektioner og gratis prøvemedlemskab.',emoji:'🌱',full:'<p>Ebeltoft Golf Club åbner tilmeldingen til sæsonens nye begynderhold. Med plads til kun 6 deltagere pr. hold er det vigtigt at tilmelde sig hurtigt.</p><p>Forløbet strækker sig over 8 uger med én ugentlig lektion med Kennett Sørensen, PGA Teaching Professional. Alle niveauer er velkomne – du skal blot have lysten.</p><p>Prisen er 2.995 kr. inkl. leje af udstyr og 3 måneders prøvemedlemskab. <strong>Ring til Kennett for at tilmelde dig.</strong></p>'},
+  {cat:'klub',tag:'Klub',date:'3. juni 2026',title:'Kennett Sørensen certificeret i TrackMan 4',exc:'Ebeltoft Golf Club investerer i fremtidens trænerværktøjer. Book en TrackMan-session og se din swing i detaljer.',emoji:'📊',full:'<p>Vi er stolte af at annoncere, at vores PGA Teaching Professional Kennett Sørensen nu er fuldt certificeret i TrackMan 4 – markedets mest avancerede swinganalyseværktøj.</p><p>Med TrackMan 4 kan Kennett nu tilbyde præcis, datadrevet feedback på alle aspekter af din swing og boldflugt – fra launch angle til spin rate.</p><p><strong>Book din TrackMan-session i dag for kun 750 kr.</strong></p>'},
+  {cat:'café',tag:'Café',date:'28. maj 2026',title:'Café To lancerer ny sommermenu med lokale råvarer',exc:'Friske grøntsager fra Mols og fisk fra Ebeltoft Havn. Smag naturen – direkte på tallerkenen.',emoji:'☕',full:'<p>Café To er klar med en ny sommermenu inspireret af Djurslands fantastiske råvarer. Vores køkken samarbejder nu direkte med lokale producenter i Mols Bjerge-området.</p><p>Forvent friske grøntsager, lokale oste og fisk fra Ebeltoft Havn – alt tilberedt med omtanke for sæson og bæredygtighed.</p><p>Ny menu gælder fra 1. juni 2026. Åbningstider: Man–fre 08–18, Lør 07:30–17, Søn 08–16.</p>'},
+  {cat:'events',tag:'Events',date:'15. maj 2026',title:'EGC Open 2026 – tilmelding åben nu',exc:'Det årlige EGC Open afholdes 19. juli. Åbent for alle HCP-godkendte spillere. Præmier til top 3 i alle klasser.',emoji:'🏆',full:'<p>Ebeltoft Golf Club inviterer til årets største turnering – EGC Open 2026. Turneringen er åben for alle spillere med gyldigt DGU-handicap.</p><p>Format: Stableford · 18 huller · Handicap-klasser: Herrer, Damer, Senior, Junior</p><p>Præmier uddeles til top 3 i alle klasser samt Nearest to Pin og Longest Drive. Middag og præmieoverrækkelse i Café To bagefter.</p><p><strong>Tilmelding via GolfBox – deadline 14. juli.</strong></p>'},
+  {cat:'klub',tag:'Klub',date:'2. maj 2026',title:'Ny bane-app giver bedre oplevelse for alle spillere',exc:'ProHub360 Ebeltoft er nu tilgængelig som PWA. Download og få adgang til baneguide, tips og booking.',emoji:'📱',full:'<p>Ebeltoft Golf Club lancerer ProHub360 Ebeltoft – en ny digital platform der samler alt fra bookinger og baneguide til Academy-videoer og Café To i én app.</p><p>Appen kan installeres direkte fra browseren på din telefon – ingen App Store nødvendig. Tryk på "Installer" banneret for at tilføje den til din startskærm.</p><p>Spørgsmål? Kontakt Kennett Sørensen.</p>'},
+];
+
+function buildNews(cat){
+  cat=cat||'alle';
+  const list=document.getElementById('news-list');
+  if(!list)return;
+  const filtered=cat==='alle'?newsData:newsData.filter(function(n){return n.cat===cat});
+  list.innerHTML=filtered.map(function(n){return ''
+    +'<div class="nc" onclick="openArticle(\''+n.cat+'\',\''+n.tag+'\',\''+n.date+'\',\''+n.title.replace(/'/g,"\\'")+'\',\''+n.exc.replace(/'/g,"\\'")+'\',\''+n.emoji+'\',`'+n.full+'`)">'
+    +'<div class="iph nc-img" style="height:148px"><span>'+n.emoji+'</span></div>'
+    +'<div class="nc-body">'
+    +'<div class="nc-meta"><span class="nc-tag">'+n.tag+'</span><span class="nc-date">'+n.date+'</span></div>'
+    +'<div class="nc-title">'+n.title+'</div>'
+    +'<div class="nc-exc">'+n.exc+'</div>'
+    +'</div></div>';
+  }).join('');
+}
+
+document.getElementById('news-chips').addEventListener('click',function(e){
+  const chip=e.target.closest('.chip');if(!chip)return;
+  document.querySelectorAll('#news-chips .chip').forEach(function(c){c.classList.remove('active')});
+  chip.classList.add('active');
+  buildNews(chip.dataset.cat);
+});
+
+function openArticle(cat,tag,date,title,exc,emoji,full){
+  const ov=document.getElementById('article-overlay');
+  document.getElementById('art-content').innerHTML=''
+    +'<div class="iph art-img" style="background:linear-gradient(135deg,var(--navy),var(--green))"><span style="font-size:3rem">'+emoji+'</span></div>'
+    +'<div class="art-body">'
+    +'<div class="art-cat">'+tag+'</div>'
+    +'<div class="art-title">'+title+'</div>'
+    +'<div class="art-meta">📅 '+date+' · Ebeltoft Golf Club</div>'
+    +'<div class="art-text">'+full+'</div>'
+    +'<div class="btn-row" style="margin-top:20px">'
+    +'<a class="ab btn-green" href="tel:+4500000000">📞 Ring til Kennett</a>'
+    +'<button class="ab btn-navy" onclick="gotoPage(\'booking\');closeArticle()">📲 Book Træning</button>'
+    +'</div></div>';
+  ov.classList.add('open');
+  ov.scrollTop=0;
+}
+function closeArticle(){document.getElementById('article-overlay').classList.remove('open')}
+
+const evData=[
+  {day:'21',month:'Jun',title:'Begynder Dag – Prøv Golf Gratis',info:'⏰ kl. 10:00–14:00 · ⛳ Øvebanen · Gratis for alle',badge:'Begynder',cat:'begynder',color:'var(--green)'},
+  {day:'28',month:'Jun',title:'EGC Membersmatch – Stableford',info:'⏰ Start kl. 09:00 · ⛳ 18 huller · Tilmelding via GolfBox',badge:'Turnering',cat:'turnering',color:'var(--navy)'},
+  {day:'4',month:'Jul',title:'Firma Golf Day – Vestas Energy',info:'⏰ Privat arrangement · kl. 12:00 · Teambuilding + Café To middag',badge:'Firma',cat:'firma',color:'#8B5CF6'},
+  {day:'12',month:'Jul',title:'Sommerfest – EGC Socialt',info:'⏰ kl. 17:00 · Buffet, musik og hygge for alle medlemmer',badge:'Socialt',cat:'socialt',color:'#f59e0b'},
+  {day:'19',month:'Jul',title:'EGC Open 2026',info:'⏰ kl. 08:00 shotgun start · HCP krævet · Præmier + middag',badge:'Turnering',cat:'turnering',color:'var(--sand2)'},
+  {day:'2',month:'Aug',title:'Begyndersæson 2026 Kickoff',info:'⏰ kl. 10:00 · Intro-møde + bane-intro med Kennett',badge:'Begynder',cat:'begynder',color:'var(--green2)'},
+];
+
+function buildEvents(cat){
+  cat=cat||'alle';
+  const el=document.getElementById('ev-list');
+  if(!el)return;
+  const f=cat==='alle'?evData:evData.filter(function(e){return e.cat===cat});
+  el.innerHTML=f.map(function(e){return ''
+    +'<div class="ev-card">'
+    +'<div class="ev-date" style="background:'+e.color+'"><div class="ev-day">'+e.day+'</div><div class="ev-month">'+e.month+'</div></div>'
+    +'<div class="ev-body"><div class="ev-title">'+e.title+'</div><div class="ev-info">'+e.info+'</div><span class="ev-badge">'+e.badge+'</span></div>'
+    +'</div>';
+  }).join('');
+}
+
+document.getElementById('ev-chips').addEventListener('click',function(e){
+  const chip=e.target.closest('.chip');if(!chip)return;
+  document.querySelectorAll('#ev-chips .chip').forEach(function(c){c.classList.remove('active')});
+  chip.classList.add('active');
+  buildEvents(chip.dataset.cat);
+});
+
+const holes=[
+  {par:4,m:348,si:7,emoji:'🌿',tip:'Spil mod højre side – venstre bunker stikker længere ud end den ser ud.',strat:'Driver til 150m. Hold af venstre rough.',fejl:'Driver for hårdt mod flag – bunker venstre er dybere end den ser ud.',begynder:'Brug 5-jern fra tee og nyd udsigten. Greenen er bred.'},
+  {par:3,m:145,si:15,emoji:'🌊',tip:'Vinden fra vigen giver typisk 1–2 klub mere. Sigte midten af greenen.',strat:'Altid midten. Aldrig flag på par 3 Hul 2.',fejl:'Undervurderer vinden fra havet og lander i rough foran.',begynder:'Tag en klub mere end du tror. Greenen er stor og tilgivende.'},
+  {par:5,m:467,si:1,emoji:'⛰️',tip:'Hullets sværeste. Anden slag: ALDRIG for greenen. Spil til 100m.',strat:'Driver · Fairway iron til 100m · Wedge ind.',fejl:'Forsøger at nå i 2 slag og ender i water hazard.',begynder:'Par er bonus på dette hul. Bogey er et fint mål.'},
+  {par:4,m:334,si:11,emoji:'🌲',tip:'Downhill tee-shot. Driver giver nemt for langt – overvej 3-jern.',strat:'3-jern til flad del af fairway. Greenen er lille og beskyttet.',fejl:'Driver for langt og ned i rough foran greenen.',begynder:'Spil til fairway med 7-jern og nyd det smukkeste hul på banen.'},
+  {par:4,m:362,si:3,emoji:'🏖️',tip:'Greenen falder bagfra. Holds-up putt altid kortere end den ser ud.',strat:'Driver · Langt jernslag ind. Sigt bagkant af greenen.',fejl:'For langt ind – bolden ruller over bagkanten.',begynder:'Greenen er brat – 2-putt fra alle positioner kræver korrekt læsning.'},
+  {par:3,m:160,si:17,emoji:'💧',tip:'Par 3 over vand. Spil altid til bredden af greenen, aldrig flag.',strat:'Tag en klub mere. Vind fra venstre. Aldrig flag.',fejl:'Flag-jagt over vandet. Bolden i søen = dobbelt bogey.',begynder:'En 6-jern til den tørre del af greenen er perfekt. Rolig og fokuseret.'},
+  {par:4,m:311,si:13,emoji:'🌾',tip:'Kort hul – driver er overflødig. 5-jern til 150m, derefter nem inngang.',strat:'5-jern · 9-jern ind. Greenen er åben forfra.',fejl:'Driver skyder bolden i rough bag fairway. Blokeret indgang.',begynder:'Dit bedste hul for birdie. Spil roligt og tæl ikke for hurtigt.'},
+  {par:4,m:371,si:5,emoji:'🌀',tip:'Doglegg højre. Sigt det venstre træ fra tee – kurven tager dig resten.',strat:'Driver mod venstre træ. Fairway opens op. Jernslag ind.',fejl:'Forsøger at skære hjørnet og ender i rough højre.',begynder:'Følg fairwayens kurve. Driver mod midten virker altid.'},
+  {par:5,m:485,si:9,emoji:'⛳',tip:'Smukkeste udsigt på banen. Relax og nyd – greenen er stor og åben.',strat:'Driver · Fairway wood · Wedge. 3 gode slag = birdie-chance.',fejl:'Forsøger birdie for tidligt og rushes swing.',begynder:'Nyd panoramaudsigten over Ebeltoft Vig. Dit bedste 5-par hul.'},
+  {par:4,m:338,si:8,emoji:'🏌️',tip:'Bunker midt på fairway ved 200m. Spil under eller over den.',strat:'Driver over bunkerne ELLER 5-jern under. Aldrig i bunkeren.',fejl:'Driver rammer midt i fairway-bunker = bogeypotentiale.',begynder:'5-jern til 150m er altid sikkert. Bunkeren ser farlig ud men er nem at undgå.'},
+  {par:3,m:130,si:18,emoji:'🍃',tip:'Nemmeste par 3 – men vær opmærksom på den faldende green.',strat:'9-jern eller wedge. Sigt midten. Greenen er hurtig.',fejl:'For langt – greenen falder hårdt af bagi.',begynder:'Dit bedste par 3-hul. Slå roligt og tæl dine putt.'},
+  {par:4,m:358,si:4,emoji:'🌳',tip:'Lang rough venstre. Altid til højre side af fairway fra tee.',strat:'Driver mod højre side. Jernslag ind til stor green.',fejl:'Driver venstre og 10 minutters boldleding i rough.',begynder:'Fairway wood eller 5-jern holder dig på banen. Prioriter fairway.'},
+  {par:5,m:472,si:2,emoji:'🦅',tip:'Andensværeste hul. Tre slag til greenen er altid klogeste valg.',strat:'Driver · Iron 6 til 120m zone · Wedge. Tålmodighed belønnes.',fejl:'Forsøger 2-på og ender i water til venstre.',begynder:'Bogey er et fremragende resultat her. Tre sikre slag er planen.'},
+  {par:4,m:329,si:14,emoji:'🌺',tip:'Lille green. Spin på jernene er din ven her – stop bolden hurtigt.',strat:'Driver · Kort jernslag med kontrolleret spin. Aldrig kile fra rough.',fejl:'Bold lander langt bag flag – ingen stop = 3-putt.',begynder:'Sigt midten og tag bonus hvis du er tæt. Greenen er svær.'},
+  {par:4,m:352,si:6,emoji:'💨',tip:'Vinden fra havet. Tjek altid vindretning inden du vælger kølle.',strat:'Driver · Tjek vind · Juster køllevalg. Greenen er åben.',fejl:'Ignorerer vinden og skyder 2 klubber for kort/langt.',begynder:'Hoved ned og spil vinden – ikke mod den. Det er fornuftigt.'},
+  {par:3,m:179,si:16,emoji:'🦋',tip:'Langest par 3. Hybrid eller 3-jern for de fleste. Ingen skam i bogey.',strat:'Hybrid · Sigt midten. Vindretning er afgørende.',fejl:'9-jern er aldrig nok. Undershoter greenen konstant.',begynder:'Tag din hybridkølle og sving roligt. 2-putt er fint.'},
+  {par:4,m:343,si:10,emoji:'🌅',tip:'Greenen skråner mod dig – putt er nemmere end den ser ud.',strat:'Driver · Jernslag ind med greenen åben. Putt med mod.',fejl:'Overgreens – bolden ruller ud bagi.',begynder:'Næstbedste hul for par. Nyd udsigten og spil roligt.'},
+  {par:5,m:449,si:12,emoji:'🏠',tip:'Hjemhullet! Flag fortil? Spil midten. Kig leaderboardet EFTER slaget.',strat:'Driver · Fairway wood · Wedge ind. Fokus hele vejen hjem.',fejl:'Distraheres af leaderboard. Bold i rough højre = bogey.',begynder:'Smil og nyd din runde. Uanset score er du klogere end da du startede!'},
+];
+
+function buildCourse(){
+  const el=document.getElementById('hole-list');if(!el)return;
+  const colors=['#12324A','#3F6B43','#1a4060','#2d4f31','#5a3060','#8B4513','#1a5a5a','#4a1020','#12324A','#3F6B43','#1a4060','#8B4513','#2d4f31','#5a3060','#1a5a5a','#4a1020','#12324A','#3F6B43'];
+  function parClass(h){return h.par===3?'par3':h.par===5?'par5':''}
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div><div class="ey">EGC · Par 72</div><div class="st">Alle 18 huller</div></div><div style="background:var(--green);color:#fff;border-radius:var(--radius);padding:7px 13px;font-weight:700;font-size:.78rem">Par 72 · 6.272 m</div></div>';
+  html+=holes.map(function(h,i){return ''
+    +'<div class="hole-acc" id="ha'+i+'">'
+    +'<div class="hole-hdr" onclick="toggleHole('+i+')">'
+    +'<div class="hole-num" style="background:'+colors[i]+'"><div class="hn">'+(i+1)+'</div><div class="hl">Hul</div></div>'
+    +'<div class="hole-meta-row">'
+    +'<div class="hm-item"><div class="hm-lab">Par</div><div class="hm-val">'+h.par+'</div></div>'
+    +'<div class="hm-item"><div class="hm-lab">Meter</div><div class="hm-val">'+h.m+'</div></div>'
+    +'<div class="hm-item"><div class="hm-lab">SI</div><div class="hm-val">'+h.si+'</div></div>'
+    +'</div>'
+    +'<div class="hole-arr">▾</div>'
+    +'</div>'
+    +'<div class="hole-body">'
+    +'<div class="hole-inner">'
+    +'<div class="hole-img">'+h.emoji+'</div>'
+    +'<div style="margin-bottom:10px"><span class="par-badge '+parClass(h)+'">Par '+h.par+'</span></div>'
+    +'<div class="hole-sec"><div class="hole-sec-label">💬 Kennetts tip</div><div class="hole-sec-text">'+h.tip+'</div></div>'
+    +'<div class="hole-sec"><div class="hole-sec-label">🎯 Strategi fra tee</div><div class="hole-sec-text">'+h.strat+'</div></div>'
+    +'<div class="hole-sec"><div class="hole-sec-label">⚠️ Typisk fejl</div><div class="hole-sec-text">'+h.fejl+'</div></div>'
+    +'<div class="hole-sec"><div class="hole-sec-label">🌱 Begynderråd</div><div class="hole-sec-text">'+h.begynder+'</div></div>'
+    +'</div></div></div>';
+  }).join('');
+  el.innerHTML=html;
+}
+
+function toggleHole(i){
+  const el=document.getElementById('ha'+i);
+  const was=el.classList.contains('open');
+  document.querySelectorAll('.hole-acc').forEach(function(a){a.classList.remove('open')});
+  if(!was)el.classList.add('open');
+}
+
+function dashInput(el,nextId){
+  if(el.value.length===1){
+    if(nextId){document.getElementById(nextId).focus()}
+    else{checkDashCode()}
+  }
+}
+
+function checkDashCode(){
+  const code=['d1','d2','d3','d4'].map(function(id){return document.getElementById(id).value}).join('');
+  if(code==='2026'){
+    document.getElementById('dash-login').style.display='none';
+    document.getElementById('dash-content').style.display='block';
+    buildCharts();
+  } else {
+    document.getElementById('dl-err').textContent='Forkert kode – prøv igen';
+    ['d1','d2','d3','d4'].forEach(function(id){document.getElementById(id).value=''});
+    document.getElementById('d1').focus();
+    setTimeout(function(){document.getElementById('dl-err').textContent=''},2500);
+  }
+}
+
+function logoutDash(){
+  document.getElementById('dash-login').style.display='flex';
+  document.getElementById('dash-content').style.display='none';
+  ['d1','d2','d3','d4'].forEach(function(id){document.getElementById(id).value=''});
+}
+
+function buildCharts(){
+  const months=['Jan','Feb','Mar','Apr','Maj','Jun'];
+  buildBar('ch1',months,[8,14,22,31,38,29],38,'var(--green)');
+  buildBar('ch2',months,[0,0,4,8,12,14],14,'var(--navy)');
+  buildBar('ch3',['K1','K2','K3','K4'],[2,3,4,1],4,'var(--sand2)');
+  const acts=[
+    {ico:'📲',bg:'var(--green)',txt:'Ny booking: Lars M. – Individuel lektion',time:'I dag 14:32'},
+    {ico:'🌱',bg:'var(--green)',txt:'Tilmelding: Begyndersæson 2026',time:'I dag 11:18'},
+    {ico:'💼',bg:'var(--navy)',txt:'Firmaevent forespørgsel: Vestas Energy',time:'I går 16:45'},
+    {ico:'📅',bg:'#8B5CF6',txt:'EGC Membersmatch – 18 tilmeldte',time:'I går 09:00'},
+    {ico:'☕',bg:'#8B4513',txt:'Café To: Ny sommermenu uploadet',time:'23/6 10:00'},
+  ];
+  document.getElementById('act-log').innerHTML=acts.map(function(a){return ''
+    +'<div class="act-row">'
+    +'<div class="act-ico" style="background:'+a.bg+'20">'+a.ico+'</div>'
+    +'<div style="flex:1"><div class="act-txt">'+a.txt+'</div><div class="act-time">'+a.time+'</div></div>'
+    +'</div>';
+  }).join('');
+}
+
+function buildBar(id,labels,vals,maxV,color){
+  const el=document.getElementById(id);if(!el)return;
+  el.innerHTML=labels.map(function(l,i){
+    const h=Math.max(8,Math.round((vals[i]/maxV)*80));
+    return '<div class="bar-wrap"><div class="bar-vl">'+vals[i]+'</div><div class="bar" style="height:'+h+'px;background:'+color+'"></div><div class="bar-lbl">'+l+'</div></div>';
+  }).join('');
+}
+
+function openBookingGolfBox(){window.open('https://www.golfbox.dk','_blank')}
+
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault();deferredPrompt=e;
+  setTimeout(function(){document.getElementById('install-banner').classList.remove('hidden')},5000);
+});
+function installApp(){
+  if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;document.getElementById('install-banner').classList.add('hidden')});}
+  else alert('For at installere:\n📱 iOS: Del-knap → "Føj til hjemmeskærm"\n🤖 Android: Menuknap → "Installer app"');
+}
+setTimeout(function(){if(!deferredPrompt)document.getElementById('install-banner').classList.remove('hidden')},6000);
+
+document.querySelectorAll('.chip-row').forEach(function(row){
+  row.querySelectorAll('.chip').forEach(function(chip){
+    chip.addEventListener('click',function(){
+      row.querySelectorAll('.chip').forEach(function(c){c.classList.remove('active')});
+      chip.classList.add('active');
+    });
+  });
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  buildNews();
+  buildEvents();
+  buildCourse();
+});
+
+const mf={name:"ProHub360 Ebeltoft",short_name:"ProHub360",start_url:".",display:"standalone",background_color:"#12324A",theme_color:"#12324A",icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='24' fill='%2312324A'/%3E%3Ccircle cx='96' cy='72' r='28' fill='%23DCC7A1'/%3E%3Crect x='90' y='96' width='12' height='58' fill='%233F6B43'/%3E%3C/svg%3E",sizes:"192x192",type:"image/svg+xml"},{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='60' fill='%2312324A'/%3E%3Ccircle cx='256' cy='192' r='76' fill='%23DCC7A1'/%3E%3Crect x='240' y='260' width='32' height='155' fill='%233F6B43'/%3E%3C/svg%3E",sizes:"512x512",type:"image/svg+xml"}]};
+const mb=new Blob([JSON.stringify(mf)],{type:'application/json'});
+const ml=document.createElement('link');ml.rel='manifest';ml.href=URL.createObjectURL(mb);document.head.appendChild(ml);
+
+if('serviceWorker' in navigator){
+  const sw="const C='prohub360-v2';self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(['/']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));";
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'text/javascript'}))).catch(function(){});
+}
+</script>
+</body>
+</html>
